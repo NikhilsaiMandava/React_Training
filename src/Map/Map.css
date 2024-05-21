@@ -1,0 +1,12 @@
+.map_main_div {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    background-color: rgba(246, 246, 247, 1);
+}
+.map_filter_div {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

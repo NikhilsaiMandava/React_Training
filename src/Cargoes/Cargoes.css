@@ -1,0 +1,25 @@
+.cargoes_main_div {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    margin-left: 40px;
+}
+.cargoes_sub_div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.cargoes_nav_links {
+    color: rgba(181, 187, 198, 1);
+    margin-right: 15px;
+    font-size: 14px;
+}
+.cargoes_nav_links.active {
+    color : rgba(16, 24, 40, 1);
+    text-decoration: underline;
+    font-weight: bold;
+}
+.cargoes_outlet_div {
+    margin-top: 10px;
+}
