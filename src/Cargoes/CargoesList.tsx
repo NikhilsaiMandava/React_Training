@@ -84,7 +84,7 @@ const statusProgressMap = {
     "Distribution In": 50,
     "Distribution Out": 70,
     "Delivered": 100,
-} as const;
+};
 
 export type cargo = {
     customer : string,

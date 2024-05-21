@@ -1,5 +1,6 @@
 Input:focus {
     outline : none;
+    box-shadow: none;
 }
 Input {
     border:1px solid rgba(203, 213, 225, 1);

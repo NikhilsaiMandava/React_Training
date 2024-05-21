@@ -17,9 +17,9 @@ import EditProfile from '../Profile/EditProfile.tsx';
 const userData = {
     firstName: 'Qwerty',
     lastName: 'John',
-    email: "ntr9999@gmail.com",
+    email: "qwerty9999@gmail.com",
     login: "Qwertyjohn",
-    password: "ntr9999",
+    password: "john9999",
     role: 'Administrator',
     profile_pic: profilePic
 }

@@ -74,7 +74,8 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                 transform: 'translate(-50%, -50%)', 
                 backgroundColor: 'rgba(246, 246, 247, 1)', 
                 outline: 'none',
-                width:'1100px' 
+                width:'1100px',
+                zIndex:1000
             }}
         >
             <CardHeader style={{ 
