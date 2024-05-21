@@ -103,7 +103,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({ field }) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Customer</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                                 <FormField
@@ -112,7 +112,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({ field }) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Cargo Sub Type</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                                 <FormField
@@ -121,7 +121,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({ field }) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Project Number</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                                 <FormField
@@ -130,7 +130,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({ field }) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Barcode#</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                                 <FormField
@@ -139,7 +139,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({ field }) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Length(m)</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                             </div>
@@ -150,7 +150,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({field}) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Packing List ID</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                                 <FormField
@@ -159,7 +159,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({field}) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Cargo Status</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                                 <FormField
@@ -168,7 +168,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({field}) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Voyage#</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                                 <FormField
@@ -177,7 +177,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({field}) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Guppy ID</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                                 <FormField
@@ -186,7 +186,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({field}) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Height</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                             </div>
@@ -197,7 +197,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({field}) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Cargo Type</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                                 <FormField
@@ -206,7 +206,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({field}) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Project Name</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                                 <FormField
@@ -215,7 +215,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({field}) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Cargo ID</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                                 <FormField
@@ -224,7 +224,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({field}) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Remora ID</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                                 <FormField
@@ -233,7 +233,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                                     render={({field}) => (
                                     <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
                                         <FormLabel style={{width:'140px'}}>Weight,Metric tons</FormLabel>
-                                        <Input {...field} style={{width:'200px'}}/>
+                                        <Input {...field} className="input"/>
                                     </FormItem>)}
                                 />
                             </div>

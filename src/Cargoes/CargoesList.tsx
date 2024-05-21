@@ -261,7 +261,7 @@ function CargoesList() {
                     padding:'0px',
                     width:'115px'
                     }}>
-                    <Sheet />Generate Report
+                    <Sheet style={{color:'rgba(181, 187, 198, 1)'}}/>Generate Report
                 </Button>
                 <Separator orientation="vertical" style={{
                     height:'30px',

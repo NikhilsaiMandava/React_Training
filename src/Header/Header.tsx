@@ -62,6 +62,7 @@ function Header() {
                         <MenubarTrigger style={{background:'none',border:'none',color:'white',padding:'0px'}}>
                             {userData.firstName}
                             {userData.lastName}
+                            <span className="ml-2" style={{paddingTop:'5px',marginLeft:'0px'}}>▼</span>
                         </MenubarTrigger>
                         <MenubarContent style={{width:'80px',marginTop:'10px'}}>
                             <MenubarItem onClick={handleShowEditProfile}><User2Icon style={{marginRight:'5px',fontSize:'20px'}} />Edit Profile</MenubarItem>

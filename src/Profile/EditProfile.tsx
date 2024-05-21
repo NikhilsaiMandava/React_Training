@@ -17,6 +17,7 @@ import { z } from "zod"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button"
 import { XIcon } from "lucide-react";
+import './EditProfile.css';
 
 interface UserData {
     firstName: string;
@@ -58,8 +59,19 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
         console.log(data);
     };
     return (
-        <Card style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:'600px',backgroundColor:'rgba(246, 246, 247, 1)',outline:'none',zIndex:'1000'}}>
-            <CardHeader style={{display:'flex',flexDirection:'row',justifyContent:'space-between',backgroundColor:'rgba(26, 41, 80, 1)',color:'white'}}>
+        <Card style={{
+            position:'absolute',
+            top:'50%',
+            left:'50%',
+            transform:'translate(-50%,-50%)',
+            width:'700px',
+            backgroundColor:'rgba(255, 255, 255, 1)',
+            outline:'none',
+            zIndex:'1000',
+            border : '1px solid rgba(246, 246, 247, 1)'
+            }}
+        >
+            <CardHeader style={{display:'flex',flexDirection:'row',justifyContent:'space-between',backgroundColor:'rgba(26, 41, 80, 1)',color:'white',height:'65px',alignItems:'center'}}>
                 <CardTitle>Edit Profile</CardTitle>
                 <XIcon onClick={onClose}/>
             </CardHeader>
@@ -79,13 +91,13 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <div style={{display:'flex',flexDirection:'row',}}>
-                            <div style={{width : '157px',display:'flex',alignItems:'center'}}>
+                            <div style={{width : '140px',display:'flex',alignItems:'center'}}>
                                 <FormField
                                     control={form.control}
                                     name="firstName"
                                     render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>First Name</FormLabel>
+                                        <FormLabel className="label">First Name</FormLabel>
                                     </FormItem>)}
                                 />
                             </div>
@@ -96,7 +108,7 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
                                         name="firstName"
                                         render={({ field }) => (
                                         <FormItem>
-                                            <Input {...field}/>
+                                            <Input {...field} className="input" style={{marginRight:'5px'}}/>
                                         </FormItem>)}
                                     />
                                     <FormField
@@ -104,8 +116,8 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
                                         name='lastName'
                                         render={({field}) => (
                                         <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                                            <FormLabel style={{width:'100px'}}>Last Name</FormLabel>
-                                            <Input {...field} />
+                                            <FormLabel style={{width:'100px'}} className="label">Last Name</FormLabel>
+                                            <Input {...field} className="input"/>
                                         </FormItem>)}
                                     />
                                 </div>
@@ -116,8 +128,8 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
                             name="email"
                             render={({ field }) => (
                             <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                                <FormLabel style={{width:'157px'}}>Email</FormLabel>
-                                <Input {...field} />
+                                <FormLabel style={{width:'157px'}} className="label">Email</FormLabel>
+                                <Input {...field} className="input"/>
                             </FormItem>)}
                         />
                         <FormField
@@ -125,8 +137,8 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
                             name="login"
                             render={({ field }) => (
                             <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                                <FormLabel style={{width:'157px'}}>Login</FormLabel>
-                                <Input {...field} />
+                                <FormLabel style={{width:'157px'}} className="label">Login</FormLabel>
+                                <Input {...field} className="input"/>
                             </FormItem>)}
                         />
                         <FormField
@@ -134,8 +146,8 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
                             name="password"
                             render={({ field }) => (
                             <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                                <FormLabel style={{width:'157px'}}>Password</FormLabel>
-                                <Input {...field} type="password"/>
+                                <FormLabel style={{width:'157px'}} className="label">Password</FormLabel>
+                                <Input {...field} type="password" className="input"/>
                             </FormItem>)}
                         />
                         <div style={{display:'flex',flexDirection:'row',justifyContent:'end',marginTop:'15px'}}>
