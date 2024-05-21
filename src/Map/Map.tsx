@@ -69,9 +69,9 @@ function Map() {
     return (
         <div className="map_main_div">
             <div className="map_filter_div">
-                <FilterIcon /><pre> </pre>
+                <FilterIcon style={{ color:'rgba(36, 37, 51, 1)' }}/><pre> </pre>
                 {checkedItems.length > 0 && (
-                    <div style={{ display: 'flex', flexWrap: 'nowrap',overflowX:'auto',maxWidth:'100%' }}>
+                    <div style={{ display: 'flex', flexWrap: 'nowrap',overflowX:'auto',maxWidth:'calc(100% - 120px)',alignItems:'center' }}>
                         {checkedItems.map(item => (
                             <div key={item} style={{ margin: '5px', display: 'flex', alignItems: 'center' }}>
                                 {item === "Transport Type" ? (
@@ -132,7 +132,15 @@ function Map() {
                 <Menubar style={{ padding: '0px', border: 'none', background: 'none' }}>
                     <MenubarMenu>
                         <MenubarTrigger style={{ background: 'none' }}>
-                            <Button><Plus />Filter</Button>
+                            <Button style={{
+                                backgroundColor:'rgba(16, 24, 40, 1)',
+                                border:'0.9px solid rgba(208, 213, 221, 1)',
+                                borderRadius:'7.83px',
+                                color:'rgba(255, 255, 255, 1)'
+                                }}>
+                                <Plus />
+                                Filter
+                            </Button>
                         </MenubarTrigger>
                         <MenubarContent style={{ display: 'flex', flexDirection: 'column' }}>
                             {filterOptions.map(option => (

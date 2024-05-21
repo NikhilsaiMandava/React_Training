@@ -59,105 +59,108 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
         console.log(data);
     };
     return (
-        <Card style={{
-            position:'absolute',
-            top:'50%',
-            left:'50%',
-            transform:'translate(-50%,-50%)',
-            width:'700px',
-            backgroundColor:'rgba(255, 255, 255, 1)',
-            outline:'none',
-            zIndex:'1000',
-            border : '1px solid rgba(246, 246, 247, 1)'
-            }}
-        >
-            <CardHeader style={{display:'flex',flexDirection:'row',justifyContent:'space-between',backgroundColor:'rgba(26, 41, 80, 1)',color:'white',height:'65px',alignItems:'center'}}>
-                <CardTitle>Edit Profile</CardTitle>
-                <XIcon onClick={onClose}/>
-            </CardHeader>
-            <CardContent style={{padding:'10px'}}>
-                <div style={{display:'flex',flexDirection:'row',alignItems:'center',marginBottom:'10px'}}>
-                    <div>
-                        <Avatar style={{width:'100px',height:'100px'}}>
-                            <AvatarImage src={userData.profile_pic}/>
-                            <AvatarFallback>P</AvatarFallback>
-                        </Avatar>
+        <div className="editprofile_main_div">
+            <Card style={{
+                position:'absolute',
+                top:'50%',
+                left:'50%',
+                transform:'translate(-50%,-50%)',
+                width:'700px',
+                backgroundColor:'rgba(255, 255, 255, 1)',
+                outline:'none',
+                zIndex:'1000',
+                border : '1px solid rgba(246, 246, 247, 1)'
+                }}
+            >
+                <CardHeader style={{display:'flex',flexDirection:'row',justifyContent:'space-between',backgroundColor:'rgba(26, 41, 80, 1)',color:'white',height:'65px',alignItems:'center'}}>
+                    <CardTitle>Edit Profile</CardTitle>
+                    <XIcon onClick={onClose}/>
+                </CardHeader>
+                <CardContent style={{padding:'10px'}}>
+                    <div style={{display:'flex',flexDirection:'row',alignItems:'center',marginBottom:'10px'}}>
+                        <div>
+                            <Avatar style={{width:'100px',height:'100px'}}>
+                                <AvatarImage src={userData.profile_pic}/>
+                                <AvatarFallback>P</AvatarFallback>
+                            </Avatar>
+                        </div>
+                        <div style={{marginLeft:'20px'}}>
+                            <h4 style={{textDecoration:'underline'}}>{userData.firstName}{userData.lastName}</h4>
+                            <small>{userData.role}</small>
+                        </div>
                     </div>
-                    <div style={{marginLeft:'20px'}}>
-                        <h4 style={{textDecoration:'underline'}}>{userData.firstName}{userData.lastName}</h4>
-                        <small>{userData.role}</small>
-                    </div>
-                </div>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)}>
-                        <div style={{display:'flex',flexDirection:'row',}}>
-                            <div style={{width : '140px',display:'flex',alignItems:'center'}}>
-                                <FormField
-                                    control={form.control}
-                                    name="firstName"
-                                    render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="label">First Name</FormLabel>
-                                    </FormItem>)}
-                                />
-                            </div>
-                            <div>
-                                <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)}>
+                            <div style={{display:'flex',flexDirection:'row',}}>
+                                <div style={{width : '140px',display:'flex',alignItems:'center'}}>
                                     <FormField
                                         control={form.control}
                                         name="firstName"
                                         render={({ field }) => (
                                         <FormItem>
-                                            <Input {...field} className="input" style={{marginRight:'5px'}}/>
-                                        </FormItem>)}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name='lastName'
-                                        render={({field}) => (
-                                        <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                                            <FormLabel style={{width:'100px'}} className="label">Last Name</FormLabel>
-                                            <Input {...field} className="input"/>
+                                            <FormLabel className="label">First Name</FormLabel>
                                         </FormItem>)}
                                     />
                                 </div>
+                                <div>
+                                    <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+                                        <FormField
+                                            control={form.control}
+                                            name="firstName"
+                                            render={({ field }) => (
+                                            <FormItem>
+                                                <Input {...field} className="input" style={{marginRight:'5px'}}/>
+                                            </FormItem>)}
+                                        />
+                                        <FormField
+                                            control={form.control}
+                                            name='lastName'
+                                            render={({field}) => (
+                                            <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+                                                <FormLabel style={{width:'100px'}} className="label">Last Name</FormLabel>
+                                                <Input {...field} className="input"/>
+                                            </FormItem>)}
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                            <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                                <FormLabel style={{width:'157px'}} className="label">Email</FormLabel>
-                                <Input {...field} className="input"/>
-                            </FormItem>)}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="login"
-                            render={({ field }) => (
-                            <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                                <FormLabel style={{width:'157px'}} className="label">Login</FormLabel>
-                                <Input {...field} className="input"/>
-                            </FormItem>)}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => (
-                            <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                                <FormLabel style={{width:'157px'}} className="label">Password</FormLabel>
-                                <Input {...field} type="password" className="input"/>
-                            </FormItem>)}
-                        />
-                        <div style={{display:'flex',flexDirection:'row',justifyContent:'end',marginTop:'15px'}}>
-                            <Button style={{backgroundColor:'rgba(255, 255, 255, 1)',color:'black',outline:'1px solid rgba(226, 232, 240, 1)'}} onClick={onClose}>Cancel</Button>&nbsp;
-                            <Button style={{backgroundColor:'rgba(44, 57, 92, 1)'}}>Save Changes</Button>
-                        </div>
-                    </form>
-                </Form>
-            </CardContent>
-        </Card>
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+                                    <FormLabel style={{width:'157px'}} className="label">Email</FormLabel>
+                                    <Input {...field} className="input"/>
+                                </FormItem>)}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="login"
+                                render={({ field }) => (
+                                <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+                                    <FormLabel style={{width:'157px'}} className="label">Login</FormLabel>
+                                    <Input {...field} className="input"/>
+                                </FormItem>)}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+                                    <FormLabel style={{width:'157px'}} className="label">Password</FormLabel>
+                                    <Input {...field} type="password" className="input"/>
+                                </FormItem>)}
+                            />
+                            <div style={{display:'flex',flexDirection:'row',justifyContent:'end',marginTop:'15px'}}>
+                                <Button style={{backgroundColor:'rgba(255, 255, 255, 1)',color:'black',outline:'1px solid rgba(226, 232, 240, 1)'}} onClick={onClose}>Cancel</Button>&nbsp;
+                                <Button style={{backgroundColor:'rgba(44, 57, 92, 1)'}}>Save Changes</Button>
+                            </div>
+                        </form>
+                    </Form>
+                </CardContent>
+            </Card>
+            <div className="editprofile_bg_div" onClick={onClose}></div>
+        </div>
     )
 }
 
