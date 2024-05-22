@@ -41,12 +41,21 @@
     background-color: rgba(255, 255, 255, 1);
 }
 .table_header {
-    padding: 8.65px 17.3px;
+    padding: 6.65px 12.3px;
     background-color: rgba(252, 252, 253, 1);
     border: 0.7px solid rgba(234, 236, 240, 1);
 }
 .table_row {
-    padding: 8.65px 17.3px;
+    padding: 6.65px 12.3px;
     color: rgb(59, 67, 85);
     font-size: 10px;
+}
+.vertical_DropDown:focus {
+    box-shadow: none;
+}
+.p-4{
+    padding: 6.65px 12.3px !important;
+}
+.\[\&\:has\(\[role\=checkbox\]\)\]\:pr-0:has([role=checkbox]) {
+    padding: 6.65px 12.3px !important;
 }

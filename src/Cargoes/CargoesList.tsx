@@ -27,6 +27,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Pagination from '../Common/Pagination.tsx';
 import {
     Table,
     TableBody,
@@ -35,6 +36,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import GenerateReport from './GenerateReport/GenerateReport.tsx';
 import './CargoesList.css';
 
 export const data: cargo[] = [
@@ -54,7 +56,7 @@ export const data: cargo[] = [
         length: "22.00",
         height: "15.00",
         weightMetricTons: "SGRE",
-        statusUpdated: "Jan 26,2024 13:21"
+        statusUpdated: "Jan 26,2024 13:21 PM"
     },
     {
         customer: "Nikhil",
@@ -72,7 +74,7 @@ export const data: cargo[] = [
         length: "22.00",
         height: "15.00",
         weightMetricTons: "SGRE",
-        statusUpdated: 'Jan 15,2024 11:55'
+        statusUpdated: 'Jan 15,2024 01:21 AM'
     }
 ]
 
@@ -119,9 +121,9 @@ const renderCellContent = (key: string, value: any) => {
                 </div>
             );
         case 'statusUpdated':
-            const utcDate = moment.utc(value, 'MMM DD, YYYY HH:mm');
+            const utcDate = moment.utc(value, 'MMM DD,YYYY HH:mm A');
             const cstDate = utcDate.tz('America/Chicago');
-            const formattedDate = cstDate.format('MMM DD, YYYY hh:mm A');
+            const formattedDate = cstDate.format('MMM DD,YYYY hh:mm A');
             return <div>{formattedDate}</div>;
         default:
             return <div>{value}</div>;
@@ -144,48 +146,15 @@ const columnDefs: Array<{ key: keyof cargo, label: string, renderCell?: ({ row }
     },
     { key: 'projectName', label: 'PROJECT NAME' },
     { key: 'projectNumber', label: 'PROJECT NUMBER' },
-    // { key: 'voyage', label: 'VOYAGE' },
-    // { key: 'cargoId', label: 'CARGO ID' },
-    // { key: 'barcode', label: 'BARCODE' },
-    // { key: 'guppyId', label: 'GUPPY ID' },
-    // { key: 'remoraId', label: 'REMORA ID' },
-    // { key: 'length', label: 'LENGTH' },
-    // { key: 'height', label: 'HEIGHT' },
-    // { key: 'weightMetricTons', label: 'WEIGHT (MT)' }
-    // {
-    //     key: "actions" as any,
-    //     label: 'ACTIONS',
-    //     renderCell: ({ row }) => {
-    //         const rowValues: Record<string, any> = columnDefs.reduce((acc, col) => {
-    //             if (col.key) {
-    //                 acc[col.key] = row.getValue(col.key);
-    //             }
-    //             return acc;
-    //         }, {} as Record<string, any>);
-    //         return (
-    //             <DropdownMenu>
-    //                 <DropdownMenuTrigger asChild>
-    //                     <Button variant="ghost" className="h-8 w-8 p-0">
-    //                         <span className="sr-only">Open menu</span>
-    //                         <MoreVertical className="h-4 w-4" />
-    //                     </Button>
-    //                 </DropdownMenuTrigger>
-    //                 <DropdownMenuContent align="end">
-    //                     {Object.entries(rowValues).map(([key, value]) => (
-    //                         <DropdownMenuItem key={key}>
-    //                             <div>
-    //                                 <strong>{columnDefs.find(col => col.key === key)?.label}:</strong> {value}
-    //                             </div>
-    //                         </DropdownMenuItem>
-    //                     ))}
-    //                     <DropdownMenuSeparator />
-    //                     <DropdownMenuItem>View customer</DropdownMenuItem>
-    //                     <DropdownMenuItem>View payment details</DropdownMenuItem>
-    //                 </DropdownMenuContent>
-    //             </DropdownMenu>
-    //         );
-    //     },
-    // },
+    { key: 'customer',label:'CUSTOMER'},
+    { key: 'voyage', label: 'VOYAGE' },
+    { key: 'cargoId', label: 'CARGO ID' },
+    { key: 'barcode', label: 'BARCODE' },
+    { key: 'guppyId', label: 'GUPPY ID' },
+    { key: 'remoraId', label: 'REMORA ID' },
+    { key: 'length', label: 'LENGTH' },
+    { key: 'height', label: 'HEIGHT' },
+    { key: 'weightMetricTons', label: 'WEIGHT (MT)' }
 ];
 
 export const columns: ColumnDef<cargo>[] = [
@@ -221,7 +190,7 @@ export const columns: ColumnDef<cargo>[] = [
                     fontSize: '10px',
                     display: 'flex',
                     alignItems: 'center',
-                    fontWeight: 'normal'
+                    fontWeight: 'bolder'
                 }}
             >
                 {label}
@@ -235,12 +204,28 @@ export const columns: ColumnDef<cargo>[] = [
 ]
 
 function CargoesList() {
+    const [showGenerateReport, setShowGenerateReport] = React.useState(false);
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
     )
-    const [columnVisibility, setColumnVisibility] =
-        React.useState<VisibilityState>({})
+    const handleShowGenerateReport =() => {
+        setShowGenerateReport(true);
+    }
+    const CloseShowGenerateReport = () => {
+        setShowGenerateReport(false);
+    }
+    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
+        customer: false,
+        voyage: false,
+        cargoId: false,
+        barcode: false,
+        guppyId: false,
+        remoraId: false,
+        length: false,
+        height: false,
+        weightMetricTons: false,
+    });
     const [rowSelection, setRowSelection] = React.useState({})
 
     const table = useReactTable({
@@ -262,20 +247,23 @@ function CargoesList() {
         },
     });
 
-    const dropdownKeys = Object.keys(data[0]).filter(key => !columnDefs.some(def => def.key === key));
+    const dropdownKeys = columnDefs
+    .filter(col => !table.getColumn(col.key)?.getIsVisible())
+    .map(col => col.key);
+    console.log("++++++++++++++++++++++++++++++",dropdownKeys);
 
     return (
         <div className="cargoeslist_main_div">
             <div className="cargoeslist_sub_div">
-                <Button style={{
+                <Button onClick={handleShowGenerateReport} style={{
                     background: 'none',
-                    color: 'rgba(52, 64, 84, 1)',
+                    color: showGenerateReport ? 'rgba(52, 64, 84, 1)':'rgba(52, 64, 84, 1)',
                     fontSize: '10px',
                     padding: '0px',
                     width: '115px',
-                    fontWeight: 'normal'
+                    fontWeight: showGenerateReport ? 'bold':'normal'
                 }}>
-                    <Sheet style={{ color: 'rgba(181, 187, 198, 1)' }} />Generate Report
+                    <Sheet style={{ color: showGenerateReport ? 'rgba(52, 64, 84, 1)':'rgba(181, 187, 198, 1)' }} />Generate Report
                 </Button>
                 <Separator orientation="vertical" style={{
                     height: '30px',
@@ -317,30 +305,56 @@ function CargoesList() {
                     <Search className="search-icon" />
                     <Input className="search-input" placeholder="Search..." />
                 </div><pre> </pre>
-                <Button style={{
-                    border: '0.7px solid rgba(226, 232, 240, 1)',
-                    background: 'rgba(255, 255, 255, 1)',
-                    borderRadius: '6px',
-                    color: 'rgba(52, 64, 84, 1)',
-                    fontSize: '10px',
-                    padding: '7.68px, 12.28px, 7.68px, 12.28px'
-                }}
-                >
-                    <ListFilter style={{
-                        marginRight: '5px',
-                        width: '11px',
-                        height: '11px'
-                    }}
-                    />
-                    Filters
-                </Button><pre> </pre>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                            <Button style={{
+                            border: '0.7px solid rgba(226, 232, 240, 1)',
+                            background: 'rgba(255, 255, 255, 1)',
+                            borderRadius: '6px',
+                            color: 'rgba(52, 64, 84, 1)',
+                            fontSize: '10px',
+                            padding: '7.68px, 12.28px, 7.68px, 12.28px',
+                            fontWeight: 'normal'
+                            }}
+                        >
+                            <ListFilter style={{
+                                marginRight: '5px',
+                                width: '11px',
+                                height: '11px'
+                                }}
+                            />
+                            Filters
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" style={{height:'200px',overflowY:'auto'}}>
+                        {table
+                        .getAllColumns()
+                        .filter((column) => column.getCanHide())
+                        .map((column) => {
+                            return (
+                            <DropdownMenuCheckboxItem
+                                key={column.id}
+                                className="capitalize"
+                                checked={column.getIsVisible()}
+                                onCheckedChange={(value) =>
+                                column.toggleVisibility(!!value)
+                                }
+                            >
+                                {column.id}
+                            </DropdownMenuCheckboxItem>
+                            )
+                        })}
+                    </DropdownMenuContent>
+                </DropdownMenu>
+                <pre> </pre> 
                 <Button style={{
                     border: '0.7px solid rgba(226, 232, 240, 1)',
                     backgroundColor: 'rgba(255, 255, 255, 1)',
                     padding: '7.68px, 12.28px, 7.68px, 12.28px',
                     fontSize: '10px',
                     color: 'rgba(52, 64, 84, 1)',
-                    borderRadius: '6px'
+                    borderRadius: '6px',
+                    fontWeight:'normal'
                 }}
                 >
                     <Import style={{
@@ -357,7 +371,8 @@ function CargoesList() {
                     padding: '7.68px, 12.28px, 7.68px, 12.28px',
                     borderRadius: '6px',
                     fontSize: '10px',
-                    color: 'rgba(52, 64, 84, 1)'
+                    color: 'rgba(52, 64, 84, 1)',
+                    fontWeight:'normal'
                 }}
                 >
                     <DownloadCloud style={{
@@ -408,23 +423,28 @@ function CargoesList() {
                                     {/* Dropdown menu */}
                                     <TableCell>
                                         <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
+                                            <DropdownMenuTrigger asChild className='vertical_DropDown'>
                                                 <Button variant="ghost" className="h-8 w-8 p-0">
                                                     <span className="sr-only">Open menu</span>
                                                     <MoreVertical className="h-4 w-4" />
                                                 </Button>
                                             </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end">
+                                            <DropdownMenuContent align="end" style={{width:'200px',height:'160px',overflowY:'auto',overflowX:'auto',padding:'3px'}}>
                                                 {dropdownKeys.map(key=> (
-                                                    <DropdownMenuItem key={key}>
+                                                    <DropdownMenuItem key={key} style={{padding:'3px',fontSize:'12px'}}>
                                                         <div>
-                                                            <strong>{key.toUpperCase()}:</strong> {row.getValue(key)}
+                                                            <span style={{
+                                                                fontSize:'10px',
+                                                                padding:'0px',
+                                                                color:'rgb(59, 67, 85)'
+                                                                }}
+                                                            >
+                                                                {key.toUpperCase()}:
+                                                            </span> 
+                                                            {row.getValue(key)}
                                                         </div>
                                                     </DropdownMenuItem>
                                                 ))}
-                                                <DropdownMenuSeparator />
-                                                <DropdownMenuItem>View customer</DropdownMenuItem>
-                                                <DropdownMenuItem>View payment details</DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>
@@ -441,6 +461,10 @@ function CargoesList() {
                     </TableBody>
                 </Table>
             </div>
+            <div style={{backgroundColor:'rgba(252, 252, 253, 1)',width:'100%'}}>
+                <Pagination table={table}/>
+            </div>
+            {showGenerateReport && <GenerateReport onClose={CloseShowGenerateReport}/>}
         </div>
     )
 }

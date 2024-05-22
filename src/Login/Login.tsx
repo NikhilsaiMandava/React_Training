@@ -20,10 +20,8 @@ import { LockIcon } from "lucide-react"
 
 
 const formSchema = z.object({
-    email: z.string().min(14,{
+    email: z.string().min(8,{
         message:"Invalid Email entered"
-    }).endsWith(".com",{
-        message : "Invalid Email Address should end with .com"
     }),
     password : z.string().min(6,{
         message : "Password should be at least 6 characters",

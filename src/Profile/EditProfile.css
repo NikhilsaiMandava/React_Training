@@ -5,7 +5,7 @@
     border : 0.8px solid rgba(203, 213, 225, 1);
 }
 .label {
-    font-size: 11px;
+    font-size: 14px;
     color : rgba(0, 0, 0, 1);
 }
 .editprofile_main_div {
@@ -24,4 +24,7 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 998;
+}
+.w-full {
+    width: 100% !important;
 }

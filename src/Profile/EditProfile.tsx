@@ -74,7 +74,7 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
             >
                 <CardHeader style={{display:'flex',flexDirection:'row',justifyContent:'space-between',backgroundColor:'rgba(26, 41, 80, 1)',color:'white',height:'65px',alignItems:'center'}}>
                     <CardTitle>Edit Profile</CardTitle>
-                    <XIcon onClick={onClose}/>
+                    <XIcon onClick={onClose} style={{margin:'0px'}}/>
                 </CardHeader>
                 <CardContent style={{padding:'10px'}}>
                     <div style={{display:'flex',flexDirection:'row',alignItems:'center',marginBottom:'10px'}}>
@@ -92,7 +92,7 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)}>
                             <div style={{display:'flex',flexDirection:'row',}}>
-                                <div style={{width : '140px',display:'flex',alignItems:'center'}}>
+                                <div style={{width : '143px',display:'flex',alignItems:'center'}}>
                                     <FormField
                                         control={form.control}
                                         name="firstName"
@@ -109,7 +109,7 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
                                             name="firstName"
                                             render={({ field }) => (
                                             <FormItem>
-                                                <Input {...field} className="input" style={{marginRight:'5px'}}/>
+                                                <Input {...field} className="input"/>
                                             </FormItem>)}
                                         />
                                         <FormField
@@ -117,8 +117,8 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
                                             name='lastName'
                                             render={({field}) => (
                                             <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                                                <FormLabel style={{width:'100px'}} className="label">Last Name</FormLabel>
-                                                <Input {...field} className="input"/>
+                                                <FormLabel style={{width:'120px',marginLeft:'15px',marginRight:'15px'}} className="label">Last Name</FormLabel>
+                                                <Input {...field} className="input" style={{marginTop:'0px'}}/>
                                             </FormItem>)}
                                         />
                                     </div>

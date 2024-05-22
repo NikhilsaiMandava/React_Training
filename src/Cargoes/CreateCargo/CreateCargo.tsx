@@ -90,7 +90,7 @@ const CreateCargo: React.FC<CreateCargoProps> = ({ onClose }) => {
                     }}
                 >
                     <CardTitle style={{fontSize : '15px'}}>Create Cargo</CardTitle>
-                    <XIcon onClick={onClose} />
+                    <XIcon onClick={onClose} style={{margin:'0px'}}/>
                 </CardHeader>
                 <CardContent style={{padding:'10px'}}>
                 <Form {...form}>
