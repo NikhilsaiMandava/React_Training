@@ -19,7 +19,12 @@ import {
 interface DataTablePaginationProps<TData> {
     table: Table<TData>
 }
-  
+const noBoxShadowStyle = `
+    .no-box-shadow:focus {
+        box-shadow: none !important;
+        outline: none !important;
+        border: none !important;
+}`;
 export default function DataTablePagination<TData>({ table, }: DataTablePaginationProps<TData>) {
     return (
         <div className="pagination_main_div">
@@ -29,14 +34,15 @@ export default function DataTablePagination<TData>({ table, }: DataTablePaginati
             </div> */}
             <div className="flex items-center space-x-6 lg:space-x-8" style={{height:'20px'}}>
                 <div className="flex items-center space-x-2" style={{color : 'rgba(102, 112, 133, 1)',height:'20px'}}>
-                    <span style={{color:'rgba(102, 112, 133, 1)',fontSize:'13px'}}>Rows per page</span>
+                    <span style={{color:'rgba(102, 112, 133, 1)',fontSize:'13px',width:'90px'}}>Rows per page</span>
+                    <style>{noBoxShadowStyle}</style>
                     <Select
                         value={`${table.getState().pagination.pageSize}`}
                         onValueChange={(value) => {
                             table.setPageSize(Number(value))
                         }}
                     >
-                        <SelectTrigger className="h-8 w-[70px]">
+                        <SelectTrigger className="h-8 w-[70px] no-box-shadow">
                             <SelectValue placeholder={table.getState().pagination.pageSize}/>
                         </SelectTrigger>
                         <SelectContent side="top" style={{color : 'rgba(102, 112, 133, 1)'}}>

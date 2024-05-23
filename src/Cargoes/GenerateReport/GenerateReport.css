@@ -15,3 +15,6 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 998;
 }
+.w-56 {
+    width: 100% !important;
+}

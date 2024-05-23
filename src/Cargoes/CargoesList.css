@@ -48,6 +48,7 @@
 .table_row {
     padding: 6.65px 12.3px;
     color: rgb(59, 67, 85);
+    border: 0.7px solid rgba(234, 236, 240, 1);
     font-size: 10px;
 }
 .vertical_DropDown:focus {
