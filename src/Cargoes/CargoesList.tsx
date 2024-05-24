@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Import, Link, Sheet, Search, ListFilter, DownloadCloud, ArrowDown, MoreVertical } from "lucide-react";
+import { Import, Link, Sheet, Search, ListFilter, DownloadCloud, ArrowDown, MoreVertical,Delete } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import moment from 'moment-timezone';
 import {
@@ -25,6 +25,7 @@ import {
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
+    DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Pagination from '../Common/Pagination.tsx';
@@ -38,6 +39,7 @@ import {
 } from "@/components/ui/table";
 import GenerateReport from './GenerateReport/GenerateReport.tsx';
 import './CargoesList.css';
+import axios from 'axios';
 
 export const data: cargo[] = [
     {
@@ -157,53 +159,110 @@ const columnDefs: Array<{ key: keyof cargo, label: string, renderCell?: ({ row }
     { key: 'weightMetricTons', label: 'WEIGHT (MT)' }
 ];
 
-export const columns: ColumnDef<cargo>[] = [
-    {
-        id: 'select',
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }: { row: any }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    },
-    ...columnDefs.map(({ key, label, renderCell }) => ({
-        accessorKey: key,
-        header: ({ column }: { column: any }) => (
-            <Button
-                variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                style={{
-                    color: 'rgba(102, 112, 133, 1)',
-                    fontSize: '10px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    fontWeight: 'bolder'
-                }}
-            >
-                {label}
-                <ArrowDown style={{ width: '15px', height: '15px' }} />
-            </Button>
-        ),
-        cell: renderCell
-            ? renderCell
-            : ({ row }: { row: any }) => <div className="capitalize">{row.getValue(key)}</div>,
-    })),
-]
-
 function CargoesList() {
+    const columns: ColumnDef<cargo>[] = [
+        {
+            id: 'select',
+            header: ({ table }) => (
+                <Checkbox
+                    checked={
+                        table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')
+                    }
+                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                    aria-label="Select all"
+                />
+            ),
+            cell: ({ row }: { row: any }) => (
+                <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    aria-label="Select row"
+                />
+            ),
+            enableSorting: false,
+            enableHiding: false,
+        },
+        ...columnDefs.map(({ key, label, renderCell }) => ({
+            accessorKey: key,
+            header: ({ column }: { column: any }) => (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                    style={{
+                        color: 'rgba(102, 112, 133, 1)',
+                        fontSize: '10px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        fontWeight: 'bolder'
+                    }}
+                >
+                    {label}
+                    <ArrowDown style={{ width: '15px', height: '15px' }} />
+                </Button>
+            ),
+            cell: renderCell
+                ? renderCell
+                : ({ row }: { row: any }) => <div className="capitalize">{row.getValue(key)}</div>,
+        })),
+        {
+            id: 'moreVertical',
+            header: () => (
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild className='vertical_DropDown'>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                            <MoreVertical className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" style={{height:'200px',overflowY:'auto'}}>
+                            {table
+                            .getAllColumns()
+                            .filter((column) => column.getCanHide())
+                            .map((column) => {
+                                return (
+                                <DropdownMenuCheckboxItem
+                                    key={column.id}
+                                    className="capitalize"
+                                    checked={column.getIsVisible()}
+                                    onCheckedChange={(value) =>
+                                    column.toggleVisibility(!!value)
+                                    }
+                                >
+                                    {column.id}
+                                </DropdownMenuCheckboxItem>
+                                )
+                            })}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+            ),
+            cell: () => (
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild className='vertical_DropDown'>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                            <MoreVertical className="h-4 w-4" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" style={{ width: '100px', height: 'fit-content', padding: '1px',color:'rgba(9, 9, 11, 1)'}}>
+                        <DropdownMenuItem className='dropdown_item'>Edit</DropdownMenuItem>
+                        <DropdownMenuItem className='dropdown_item'>View</DropdownMenuItem>
+                        <DropdownMenuItem className='dropdown_item'>Make a Copy</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className='dropdown_item'>Delete
+                            <DropdownMenuShortcut style={{color:'rgba(9, 9, 11, 1)',display:'flex',flexDirection:'row'}}>⌘
+                                <Delete style={{
+                                    width:'16px',
+                                    height:'16px',
+                                    color:'rgba(9, 9, 11, 1)'
+                                    }}
+                                />
+                            </DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            ),
+            enableSorting: false,
+            enableHiding: false,
+        }
+    ]
     const [showGenerateReport, setShowGenerateReport] = React.useState(false);
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -227,7 +286,6 @@ function CargoesList() {
         weightMetricTons: false,
     });
     const [rowSelection, setRowSelection] = React.useState({})
-
     const table = useReactTable({
         data,
         columns,
@@ -420,34 +478,6 @@ function CargoesList() {
                                             )}
                                         </TableCell>
                                     ))}
-                                    {/* Dropdown menu */}
-                                    <TableCell>
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild className='vertical_DropDown'>
-                                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                                    <span className="sr-only">Open menu</span>
-                                                    <MoreVertical className="h-4 w-4" />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end" style={{width:'200px',height:'160px',overflowY:'auto',overflowX:'auto',padding:'3px'}}>
-                                                {dropdownKeys.map(key=> (
-                                                    <DropdownMenuItem key={key} style={{padding:'3px',fontSize:'12px'}}>
-                                                        <div>
-                                                            <span style={{
-                                                                fontSize:'10px',
-                                                                padding:'0px',
-                                                                color:'rgb(59, 67, 85)'
-                                                                }}
-                                                            >
-                                                                {key.toUpperCase()}:
-                                                            </span> 
-                                                            {row.getValue(key)}
-                                                        </div>
-                                                    </DropdownMenuItem>
-                                                ))}
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </TableCell>
                                 </TableRow>
                             ))
                         ):
