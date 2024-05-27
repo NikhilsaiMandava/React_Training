@@ -63,3 +63,16 @@
 .dropdown_item {
     font-size:11px;
 }
+.dropdown_search_input_filter {
+    background: none;
+    padding: 0px;
+    outline: none;
+    border-top: 0.6px solid rgba(228, 228, 231, 1);
+    border-bottom: 0.6px solid rgba(228, 228, 231, 1);
+    border-left: 0px;
+    border-right: 0px;
+}
+.dropdown_search_input_filter :focus {
+    box-shadow: none;
+    outline: none;
+}

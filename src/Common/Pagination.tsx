@@ -32,9 +32,9 @@ export default function DataTablePagination<TData>({ table, }: DataTablePaginati
                 {table.getFilteredSelectedRowModel().rows.length} of{" "}
                 {table.getFilteredRowModel().rows.length} row(s) selected.
             </div> */}
-            <div className="flex items-center space-x-6 lg:space-x-8" style={{height:'20px'}}>
+            <div className="flex items-center space-x-6 lg:space-x-8">
                 <div className="flex items-center space-x-2" style={{color : 'rgba(102, 112, 133, 1)',height:'20px'}}>
-                    <span style={{color:'rgba(102, 112, 133, 1)',fontSize:'13px',width:'90px'}}>Rows per page</span>
+                    <span style={{color:'rgba(102, 112, 133, 1)',fontSize:'13px'}}>Rows per page</span>
                     <style>{noBoxShadowStyle}</style>
                     <Select
                         value={`${table.getState().pagination.pageSize}`}
