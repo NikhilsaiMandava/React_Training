@@ -42,8 +42,8 @@ function Cargoes() {
                     >
                     <Plus style={{
                         marginRight:'5px',
-                        width:'15px',
-                        height:'15px'
+                        width:'1vw',
+                        height:'5vh'
                         }}
                     />
                     Create Cargo

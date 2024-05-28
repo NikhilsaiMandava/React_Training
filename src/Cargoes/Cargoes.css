@@ -1,8 +1,8 @@
 .cargoes_main_div {
     display: flex;
     flex-direction: column;
-    margin: 10px;
-    margin-left: 40px;
+    margin: 1vmax;
+    margin-left: 4vmax;
 }
 .cargoes_sub_div {
     display: flex;
@@ -12,7 +12,7 @@
 }
 .cargoes_nav_links {
     color: rgba(181, 187, 198, 1);
-    margin-right: 15px;
+    margin-right: 1.5vmax;
     font-size: 14px;
 }
 .cargoes_nav_links.active {
@@ -21,5 +21,5 @@
     font-weight: bold;
 }
 .cargoes_outlet_div {
-    margin-top: 10px;
+    margin-top: 0.5vmax;
 }

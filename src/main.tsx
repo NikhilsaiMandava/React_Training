@@ -7,7 +7,7 @@ import Dashboard from './Dashboard/Dashboard.tsx';
 import Map from '../src/Map/Map.tsx';
 import Cargoes from './Cargoes/Cargoes.tsx';
 import CargoesList from './Cargoes/CargoesList.tsx';
-import Archive from './Cargoes/Archive.tsx';
+import Archive from './Cargoes/ArchiveList/Archive.tsx';
 import Voyages from './Voyages/Voyages.tsx';
 import { BrowserRouter, Route, Routes,Navigate} from 'react-router-dom';
 

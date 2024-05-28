@@ -43,13 +43,13 @@ function Header() {
                 <img src={Header_Logo_Description} alt="Error While Loading" />
             </div>
             <div className='header_nav_menu_div'>
-                <ul style={{display:'flex',flexDirection : 'row'}}>
-                    <NavLink to='map' className='header_nav_links'><li>Map</li></NavLink>
-                    <NavLink to='cargoes' className='header_nav_links'><li>Cargoes</li></NavLink>
-                    <NavLink to='voyages' className='header_nav_links'><li>Voyages</li></NavLink>
-                    <NavLink to='users' className='header_nav_links'><li>Users</li></NavLink>
-                    <NavLink to='customers' className='header_nav_links'><li>Customers</li></NavLink>
-                    <NavLink to='settings' className='header_nav_links'><li>Settings</li></NavLink>
+                <ul style={{display:'flex',flexDirection : 'row',justifyContent:'space-around'}}>
+                    <NavLink to='map' className='header_nav_links'>Map</NavLink>
+                    <NavLink to='cargoes' className='header_nav_links'>Cargoes</NavLink>
+                    <NavLink to='voyages' className='header_nav_links'>Voyages</NavLink>
+                    <NavLink to='users' className='header_nav_links'>Users</NavLink>
+                    <NavLink to='customers' className='header_nav_links'>Customers</NavLink>
+                    <NavLink to='settings' className='header_nav_links'>Settings</NavLink>
                 </ul>
             </div>
             <div className='header_profile_div'>

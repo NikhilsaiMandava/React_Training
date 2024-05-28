@@ -1,6 +1,6 @@
-header {
-    width: 100%;
-}
+/* header {
+    width: 100vw;
+} */
 .dashboard_outlet_div {
     background-color: rgba(246, 246, 247, 1);
 }
