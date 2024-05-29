@@ -4,12 +4,23 @@ import './Cargoes.css';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import CreateCargo from './CreateCargo/CreateCargo';
+import EditCargo from './EditCargo/EditCargo';
+import {cargo} from './CargoesList';
 
 function Cargoes() {
     const [showCreateCargo, setShowCreateCargo] = React.useState(false);
     const navigate = useNavigate();
     const location=useLocation();
-
+    const [isEditing, setIsEditing] = React.useState(false);
+    const [selectedCargo, setSelectedCargo] = React.useState<cargo | null>(null);
+    const handleEditClick=(cargo : cargo) => {
+        setSelectedCargo(cargo);
+        setIsEditing(true);
+    }
+    const handleCloseEdit = () => {
+        setIsEditing(false);
+        setSelectedCargo(null);
+    };
     React.useEffect(() => {
         if (location.pathname === '/dashboard/cargoes') {
             navigate('list');
@@ -23,37 +34,44 @@ function Cargoes() {
         setShowCreateCargo(false);
     }
     return (
-        <div className="cargoes_main_div">
-            <div className="cargoes_sub_div">
-                <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                    <NavLink to='list' className='cargoes_nav_links'>Cargoes List</NavLink>
-                    <NavLink to='archive' className='cargoes_nav_links'>Archive</NavLink>
+        <div>
+            {isEditing && selectedCargo ? (
+                <EditCargo cargo={selectedCargo} onClose={handleCloseEdit} />
+            ) : 
+            (
+                <div className="cargoes_main_div">
+                    <div className="cargoes_sub_div">
+                        <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+                            <NavLink to='list' className='cargoes_nav_links'>Cargoes List</NavLink>
+                            <NavLink to='archive' className='cargoes_nav_links'>Archive</NavLink>
+                        </div>
+                        <div style={{display:'flex',alignItems:'center'}}>
+                            <Button onClick={handleShowCreateCargo} style={{
+                                border : '0.7px solid rgba(16, 24, 40, 1)',
+                                padding:'7.68px, 12.28px, 7.68px, 12.28px',
+                                backgroundColor:'rgba(16, 24, 40, 1)',
+                                borderRadius:'6px',
+                                boxShadow:'0 0.7 rgba(16, 24, 40, 0.05)',
+                                fontSize:'10px',
+                                color:'rgba(255, 255, 255, 1)'
+                                }}
+                            >
+                            <Plus style={{
+                                marginRight:'5px',
+                                width:'1vw',
+                                height:'5vh'
+                                }}
+                            />
+                            Create Cargo
+                        </Button>
+                        </div>
+                    </div>
+                    {showCreateCargo && <CreateCargo onClose={CloseShowCreateCargo} />}
+                    <div className='cargoes_outlet_div'>
+                        <Outlet context={{ onEditClick: handleEditClick }} />
+                    </div>
                 </div>
-                <div style={{display:'flex',alignItems:'center'}}>
-                    <Button onClick={handleShowCreateCargo} style={{
-                        border : '0.7px solid rgba(16, 24, 40, 1)',
-                        padding:'7.68px, 12.28px, 7.68px, 12.28px',
-                        backgroundColor:'rgba(16, 24, 40, 1)',
-                        borderRadius:'6px',
-                        boxShadow:'0 0.7 rgba(16, 24, 40, 0.05)',
-                        fontSize:'10px',
-                        color:'rgba(255, 255, 255, 1)'
-                        }}
-                    >
-                    <Plus style={{
-                        marginRight:'5px',
-                        width:'1vw',
-                        height:'5vh'
-                        }}
-                    />
-                    Create Cargo
-                </Button>
-                </div>
-            </div>
-            {showCreateCargo && <CreateCargo onClose={CloseShowCreateCargo} />}
-            <div className='cargoes_outlet_div'>
-                <Outlet />
-            </div>
+            )}
         </div>
     )
 }

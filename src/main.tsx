@@ -9,6 +9,7 @@ import Cargoes from './Cargoes/Cargoes.tsx';
 import CargoesList from './Cargoes/CargoesList.tsx';
 import Archive from './Cargoes/ArchiveList/Archive.tsx';
 import Voyages from './Voyages/Voyages.tsx';
+// import EditCargo from '../src/Cargoes/EditCargo/EditCargo.tsx';
 import { BrowserRouter, Route, Routes,Navigate} from 'react-router-dom';
 
 
@@ -21,8 +22,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path='/dashboard' element={<Dashboard />}>
           <Route path='map' element={<Map />}/>
           <Route path='cargoes' element={<Cargoes />}>
-            <Route path='list' element={<CargoesList />}/>
+            <Route path='list' element={<CargoesList/>}/>
             <Route path='archive' element={<Archive />}/>
+            {/* <Route path='edit' element={<EditCargo />}/> */}
           </Route>
           <Route path='voyages' element={<Voyages />}/>
         </Route>

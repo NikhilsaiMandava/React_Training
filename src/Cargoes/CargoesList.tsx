@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Import, Link2, Sheet, Search, ListFilter, DownloadCloud, ArrowDown, MoreVertical,Delete, ChevronDown,ArrowUp } from "lucide-react";
+import { Import, Link2, Sheet, Search, ListFilter, DownloadCloud, ArrowDown, MoreVertical, Delete, ChevronDown, ArrowUp } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import moment from 'moment-timezone';
 import {
@@ -23,7 +23,7 @@ import {
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
+    // DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuShortcut,
     DropdownMenuTrigger,
@@ -41,7 +41,8 @@ import GenerateReport from './GenerateReport/GenerateReport.tsx';
 import './CargoesList.css';
 import ArchiveCargoCard from './ArchiveCargoCard/ArchiveCargoCard.tsx';
 import AssignToVoyage from './AssignToVoyage/AssignToVoyage.tsx';
-import axios from 'axios';
+import { useOutletContext } from "react-router-dom";
+// import axios from 'axios';
 
 export const data: cargo[] = [
     {
@@ -148,7 +149,7 @@ const columnDefs: Array<{ key: keyof cargo, label: string, renderCell?: ({ row }
     },
     { key: 'projectName', label: 'PROJECT NAME' },
     { key: 'projectNumber', label: 'PROJECT NUMBER' },
-    { key: 'customer',label:'CUSTOMER'},
+    { key: 'customer', label: 'CUSTOMER' },
     { key: 'voyage', label: 'VOYAGE' },
     { key: 'cargoId', label: 'CARGO ID' },
     { key: 'barcode', label: 'BARCODE' },
@@ -159,8 +160,19 @@ const columnDefs: Array<{ key: keyof cargo, label: string, renderCell?: ({ row }
     { key: 'weightMetricTons', label: 'WEIGHT (MT)' }
 ];
 type SortDirection = 'asc' | 'dsc';
-
+type ContextType = {
+    onEditClick: (cargo: cargo) => void;
+};
 function CargoesList() {
+    const { onEditClick } = useOutletContext<ContextType>();
+    const [showGenerateReport, setShowGenerateReport] = React.useState(false);
+    const [showArchiveCreateCargo, setShowArchiveCreateCargo] = React.useState(false);
+    const [showAssignToVoyage, setShowAssignToVoyage] = React.useState(false);
+    const [sorting, setSorting] = React.useState<SortingState>([]);
+    const [selectedFields, setSelectedFields] = React.useState<string | null>(null);
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+        []
+    );
     const columns: ColumnDef<cargo>[] = [
         {
             id: 'select',
@@ -195,7 +207,8 @@ function CargoesList() {
                         display: 'flex',
                         alignItems: 'center',
                         fontWeight: 'bolder',
-                        width:'100%'
+                        width: '100%',
+                        padding:'0%'
                     }}
                 >
                     {label}
@@ -204,7 +217,7 @@ function CargoesList() {
             ),
             cell: renderCell
                 ? renderCell
-                : ({ row }: { row: any }) => <div className="capitalize">{row.getValue(key)}</div>,
+                : ({ row }: { row: any }) => <div className="cargoeslist_capitalize">{row.getValue(key)}</div>,
         })),
         {
             id: 'moreVertical',
@@ -215,46 +228,46 @@ function CargoesList() {
                             <MoreVertical className="h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" style={{overflowY:'auto',maxHeight:'60vh'}}>
-                            {table
+                    <DropdownMenuContent align="end" style={{ overflowY: 'auto', maxHeight: '60vh' }}>
+                        {table
                             .getAllColumns()
                             .filter((column) => column.getCanHide())
                             .map((column) => {
                                 return (
-                                <DropdownMenuCheckboxItem
-                                    key={column.id}
-                                    className="capitalize"
-                                    checked={column.getIsVisible()}
-                                    onCheckedChange={(value) =>
-                                    column.toggleVisibility(!!value)
-                                    }
-                                >
-                                    {column.id}
-                                </DropdownMenuCheckboxItem>
+                                    <DropdownMenuCheckboxItem
+                                        key={column.id}
+                                        className="capitalize"
+                                        checked={column.getIsVisible()}
+                                        onCheckedChange={(value) =>
+                                            column.toggleVisibility(!!value)
+                                        }
+                                    >
+                                        {column.id}
+                                    </DropdownMenuCheckboxItem>
                                 )
                             })}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             ),
-            cell: () => (
+            cell: ({ row }: { row: any }) => (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild className='vertical_DropDown'>
                         <Button variant="ghost" className="h-8 w-8 p-0">
                             <MoreVertical className="h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" style={{ width: '5vw', height: 'fit-content', padding: '1%',color:'rgba(9, 9, 11, 1)'}}>
-                        <DropdownMenuItem className='dropdown_item'>Edit</DropdownMenuItem>
+                    <DropdownMenuContent align="end" style={{ width: '5vw', height: 'fit-content', padding: '1%', color: 'rgba(9, 9, 11, 1)' }}>
+                        <DropdownMenuItem className='dropdown_item' onClick={() => onEditClick(row.original)}>Edit</DropdownMenuItem>
                         <DropdownMenuItem className='dropdown_item'>View</DropdownMenuItem>
                         <DropdownMenuItem className='dropdown_item'>Make a Copy</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className='dropdown_item'>Delete
-                            <DropdownMenuShortcut style={{color:'rgba(9, 9, 11, 1)',display:'flex',flexDirection:'row'}}>⌘
+                            <DropdownMenuShortcut style={{ color: 'rgba(9, 9, 11, 1)', display: 'flex', flexDirection: 'row' }}>⌘
                                 <Delete style={{
-                                    width:'fit-Content',
-                                    height:'2.5vh',
-                                    color:'rgba(9, 9, 11, 1)'
-                                    }}
+                                    width: 'fit-Content',
+                                    height: '2.5vh',
+                                    color: 'rgba(9, 9, 11, 1)'
+                                }}
                                 />
                             </DropdownMenuShortcut>
                         </DropdownMenuItem>
@@ -265,14 +278,6 @@ function CargoesList() {
             enableHiding: false,
         }
     ]
-    const [showGenerateReport, setShowGenerateReport] = React.useState(false);
-    const [showArchiveCreateCargo, setShowArchiveCreateCargo] = React.useState(false);
-    const [showAssignToVoyage, setShowAssignToVoyage] = React.useState(false);
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-    );
-    const [selectedFields, setSelectedFields] = React.useState<string | null>(null);
     const sortAllColumns = (direction: SortDirection) => {
         const sortDirection = direction === 'asc' ? 'asc' : 'desc';
         const newSorting = columns
@@ -289,19 +294,19 @@ function CargoesList() {
     const handleClearFilters = () => {
         setSelectedFields('');
     };
-    const handleShowGenerateReport =() => {
+    const handleShowGenerateReport = () => {
         setShowGenerateReport(true);
     }
     const CloseShowGenerateReport = () => {
         setShowGenerateReport(false);
     }
-    const handleShowArchiveCreateCargo =() => {
+    const handleShowArchiveCreateCargo = () => {
         setShowArchiveCreateCargo(true);
     }
     const CloseShowArchiveCreateCargo = () => {
         setShowArchiveCreateCargo(false);
     }
-    const handleShowAssignToVoyage =() => {
+    const handleShowAssignToVoyage = () => {
         setShowAssignToVoyage(true);
     }
     const CloseShowAssignToVoyage = () => {
@@ -345,32 +350,32 @@ function CargoesList() {
             <div className="cargoeslist_sub_div">
                 <Button onClick={handleShowGenerateReport} style={{
                     background: 'none',
-                    color: isAnyRowSelected ? 'rgba(52, 64, 84, 1)':'rgba(52, 64, 84, 1)',
+                    color: isAnyRowSelected ? 'rgba(52, 64, 84, 1)' : 'rgba(52, 64, 84, 1)',
                     fontSize: '10px',
                     padding: '0.25%',
                     width: 'fit-Content',
-                    fontWeight: isAnyRowSelected ? 'bold':'normal'
-                    }}
+                    fontWeight: isAnyRowSelected ? 'bold' : 'normal'
+                }}
                 >
-                    <Sheet style={{ color: isAnyRowSelected ? 'rgba(52, 64, 84, 1)':'rgba(181, 187, 198, 1)' }} />
+                    <Sheet style={{ color: isAnyRowSelected ? 'rgba(52, 64, 84, 1)' : 'rgba(181, 187, 198, 1)' }} />
                     Generate Report
                 </Button>
                 <Separator orientation="vertical" style={{
                     height: '5vh',
                     backgroundColor: 'rgba(234, 236, 240, 1)',
                     marginTop: '0.5%'
-                    }}
+                }}
                 />
                 <Button onClick={handleShowAssignToVoyage} style={{
                     background: 'none',
-                    color: isAnyRowSelected ? 'rgba(52, 64, 84, 1)':'rgba(52, 64, 84, 1)',
+                    color: isAnyRowSelected ? 'rgba(52, 64, 84, 1)' : 'rgba(52, 64, 84, 1)',
                     fontSize: '10px',
                     padding: '0.25%',
                     width: 'fit-Content',
-                    fontWeight: isAnyRowSelected ? 'bold':'normal'
-                    }}
+                    fontWeight: isAnyRowSelected ? 'bold' : 'normal'
+                }}
                 >
-                    <Link2 style={{ color: isAnyRowSelected ? 'rgba(52, 64, 84, 1)':'rgba(181, 187, 198, 1)',transform:'rotate(135deg)'}} />
+                    <Link2 style={{ color: isAnyRowSelected ? 'rgba(52, 64, 84, 1)' : 'rgba(181, 187, 198, 1)', transform: 'rotate(135deg)' }} />
                     Assign to Voyage
                 </Button>
                 <Separator orientation="vertical" style={{
@@ -381,14 +386,14 @@ function CargoesList() {
                 />
                 <Button onClick={handleShowArchiveCreateCargo} style={{
                     background: 'none',
-                    color: isAnyRowSelected ? 'rgba(52, 64, 84, 1)':'rgba(52, 64, 84, 1)',
+                    color: isAnyRowSelected ? 'rgba(52, 64, 84, 1)' : 'rgba(52, 64, 84, 1)',
                     fontSize: '10px',
                     padding: '0.25%',
                     width: 'fit-Content',
-                    fontWeight: isAnyRowSelected ? 'bold':'normal'
-                    }}
+                    fontWeight: isAnyRowSelected ? 'bold' : 'normal'
+                }}
                 >
-                    <Import style={{ color : isAnyRowSelected ? 'rgba(52, 64, 84, 1)':'rgba(181, 187, 198, 1)' }} /><pre> </pre>
+                    <Import style={{ color: isAnyRowSelected ? 'rgba(52, 64, 84, 1)' : 'rgba(181, 187, 198, 1)' }} /><pre> </pre>
                     Archive
                 </Button>
                 <div className="search-input-container">
@@ -405,49 +410,49 @@ function CargoesList() {
                             fontSize: '10px',
                             padding: '1% 1.5%',
                             fontWeight: 'normal'
-                            }}
+                        }}
                         >
                             <ListFilter style={{
                                 marginRight: '1%',
                                 width: '1vw',
                                 height: '4vh',
-                                }}
+                            }}
                             />
                             Filters
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" style={{overflowY:'auto',maxWidth:'10vw'}}>
-                        <DropdownMenuItem className='dropdown-menu-item' 
+                    <DropdownMenuContent align="end" style={{ overflowY: 'auto', maxWidth: '10vw' }}>
+                        <DropdownMenuItem className='dropdown-menu-item'
                             onClick={() => sortAllColumns('asc')}
                         >
-                            <ArrowUp style={{width:'fit-Content',height:'2.5vh'}}/>
+                            <ArrowUp style={{ width: 'fit-Content', height: '2.5vh' }} />
                             ASC
                         </DropdownMenuItem>
-                        <DropdownMenuItem className='dropdown-menu-item' 
+                        <DropdownMenuItem className='dropdown-menu-item'
                             onClick={() => sortAllColumns('dsc')}
                         >
-                            <ArrowDown style={{width:'fit-Content',height:'2.5vh'}}/>
+                            <ArrowDown style={{ width: 'fit-Content', height: '2.5vh' }} />
                             DSC
                         </DropdownMenuItem>
                         <DropdownMenu>
                             <DropdownMenuTrigger className='carges_list_filter_dropdown_selection'>
                                 <Button variant='outline' style={{
-                                    display:'flex',
-                                    flexDirection:'row',
-                                    justifyContent:'space-between',
-                                    alignItems:'center',
-                                    padding:'1% 1%',
-                                    border:'none',
-                                    }}
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    padding: '1% 1%',
+                                    border: 'none',
+                                }}
                                 >
-                                    <span style={{fontSize:'10px',color:'rgba(15, 23, 42, 1)'}}>
+                                    <span style={{ fontSize: '10px', color: 'rgba(15, 23, 42, 1)' }}>
                                         {selectedFields ? selectedFields : 'Select any field'}
                                     </span>
-                                    <ChevronDown style={{color:'1px solid rgba(77, 77, 77, 1)',width:'fit-Content',height:'2.5vh'}}/>
+                                    <ChevronDown style={{ color: '1px solid rgba(77, 77, 77, 1)', width: 'fit-Content', height: '2.5vh' }} />
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent style={{width:'fit-Content',height:'50vh',overflowY:'auto'}}>
-                                {table.getAllColumns().filter((column)=>column.id !=='select').map((column)=>{
+                            <DropdownMenuContent style={{ width: 'fit-Content', height: '50vh', overflowY: 'auto' }}>
+                                {table.getAllColumns().filter((column) => column.id !== 'select').map((column) => {
                                     return (
                                         <DropdownMenuCheckboxItem
                                             key={column.id}
@@ -464,30 +469,30 @@ function CargoesList() {
                             </DropdownMenuContent>
                         </DropdownMenu>
                         <div className='carges_list_filter_dropdown_input' style={{
-                            borderTop:'0.6px solid rgba(228, 228, 231, 1)',
-                            borderBottom:'0.6px solid rgba(228, 228, 231, 1)',
-                            padding:'0%',
-                            display:'flex',
-                            flexDirection:'row',
-                            alignItems:'center'
-                            }}
+                            borderTop: '0.6px solid rgba(228, 228, 231, 1)',
+                            borderBottom: '0.6px solid rgba(228, 228, 231, 1)',
+                            padding: '0%',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }}
                         >
                             <Search />
-                            <Input className='dropdown_search_input_filter'/>
+                            <Input className='dropdown_search_input_filter' />
                         </div>
                         <Button variant='outline' onClick={handleClearFilters} style={{
-                            display:'flex',
-                            justifyContent:'center',
-                            border:'none',
-                            width:'100%',
-                            padding:'1% 2%'
-                            }}
+                            display: 'flex',
+                            justifyContent: 'center',
+                            border: 'none',
+                            width: '100%',
+                            padding: '1% 2%'
+                        }}
                         >
                             Clear Filters
                         </Button>
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <pre> </pre> 
+                <pre> </pre>
                 <Button style={{
                     border: '0.7px solid rgba(226, 232, 240, 1)',
                     backgroundColor: 'rgba(255, 255, 255, 1)',
@@ -495,8 +500,8 @@ function CargoesList() {
                     fontSize: '10px',
                     color: 'rgba(52, 64, 84, 1)',
                     borderRadius: '6%',
-                    fontWeight:'normal'
-                    }}
+                    fontWeight: 'normal'
+                }}
                 >
                     <Import style={{
                         marginRight: '0.5%',
@@ -514,8 +519,8 @@ function CargoesList() {
                     borderRadius: '6px',
                     fontSize: '10px',
                     color: 'rgba(52, 64, 84, 1)',
-                    fontWeight:'normal'
-                    }}
+                    fontWeight: 'normal'
+                }}
                 >
                     <DownloadCloud style={{
                         marginRight: '0.5%',
@@ -548,7 +553,7 @@ function CargoesList() {
                         ))}
                     </TableHeader>
                     <TableBody>
-                    {table.getRowModel().rows?.length ? (
+                        {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
@@ -564,7 +569,7 @@ function CargoesList() {
                                     ))}
                                 </TableRow>
                             ))
-                        ):
+                        ) :
                             (
                                 <TableRow>
                                     <TableCell>
@@ -575,12 +580,12 @@ function CargoesList() {
                     </TableBody>
                 </Table>
             </div>
-            <div style={{backgroundColor:'rgba(252, 252, 253, 1)',width:'100%'}}>
-                <Pagination table={table}/>
+            <div style={{ backgroundColor: 'rgba(252, 252, 253, 1)', width: '100%' }}>
+                <Pagination table={table} />
             </div>
-            {showGenerateReport && <GenerateReport onClose={CloseShowGenerateReport}/>}
-            {showArchiveCreateCargo && <ArchiveCargoCard selectedRows={selectedRows} onClose={CloseShowArchiveCreateCargo}/>}
-            {showAssignToVoyage && <AssignToVoyage onClose={CloseShowAssignToVoyage}/>}
+            {showGenerateReport && <GenerateReport onClose={CloseShowGenerateReport} />}
+            {showArchiveCreateCargo && <ArchiveCargoCard selectedRows={selectedRows} onClose={CloseShowArchiveCreateCargo} />}
+            {showAssignToVoyage && <AssignToVoyage onClose={CloseShowAssignToVoyage} />}
         </div>
     )
 }

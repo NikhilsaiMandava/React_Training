@@ -84,3 +84,8 @@
     outline: none;
     box-shadow: none;
 }
+.cargoeslist_capitalize {
+    display: flex;
+    text-transform: capitalize;
+    justify-content: center;
+}

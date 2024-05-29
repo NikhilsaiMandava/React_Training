@@ -39,6 +39,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import Restore from '../Restore/Restore.tsx';
+import { useOutletContext } from 'react-router-dom';
 
 export const data: cargo[] = [
     {
@@ -157,8 +158,11 @@ const columnDefs: Array<{ key: keyof cargo, label: string, renderCell?: ({ row }
     { key: 'height', label: 'HEIGHT' },
     { key: 'weightMetricTons', label: 'WEIGHT (MT)' }
 ];
-
+type ContextType = {
+    onEditClick: (cargo: cargo) => void;
+};
 function Archive() {
+    const { onEditClick } = useOutletContext<ContextType>();
     const columns: ColumnDef<cargo>[] = [
         {
             id: 'select',
@@ -235,7 +239,7 @@ function Archive() {
                         </DropdownMenuContent>
                     </DropdownMenu>
             ),
-            cell: () => (
+            cell: ({row}:{row:any}) => (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild className='vertical_DropDown'>
                         <Button variant="ghost" className="h-8 w-8 p-0">
@@ -243,7 +247,7 @@ function Archive() {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" style={{ width: '10vh', height: 'fit-content', padding: '1px',color:'rgba(9, 9, 11, 1)'}}>
-                        <DropdownMenuItem className='dropdown_item'>Edit</DropdownMenuItem>
+                        <DropdownMenuItem className='dropdown_item' onClick={() => onEditClick(row.original)}>Edit</DropdownMenuItem>
                         <DropdownMenuItem className='dropdown_item'>View</DropdownMenuItem>
                         <DropdownMenuItem className='dropdown_item'>Make a Copy</DropdownMenuItem>
                         <DropdownMenuSeparator />

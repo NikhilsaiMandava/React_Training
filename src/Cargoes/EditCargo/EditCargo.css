@@ -1,0 +1,122 @@
+.edit_cargo_main_div {
+    margin: 1.5%;
+}
+.edit_cargo_sub_div {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.edit_cargo_progress_div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+.edit_cargo_name {
+    color: rgba(16, 24, 40, 1);
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 1.5%;
+}
+.progress-bar {
+    position: relative;
+    width: 40%;
+    height: 2.5vh;
+    background-color: rgba(208, 213, 221, 1);
+    border-radius: 20px;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    /* width: 100%; */
+    background-color: rgba(26, 41, 80, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    transition: width 1s ease;
+}
+.progress-text {
+    position: absolute;
+    width: 50%;
+    /* padding: 100%; */
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    color: white;
+    font-weight: 500;
+    font-size: 7px;
+}
+.bg-primary {
+    background-color: rgba(26, 41, 80, 1);
+}
+.buttons_div {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+.edit_cargo_details_main_div {
+    float: left;
+    background-color: rgba(252, 252, 253, 1);
+    height: fit-content;
+    width: 60vw;
+    margin-top: 0.5%;
+    margin-right: 0.5%;
+}
+.edit_cargo_details_button_div {
+    margin: 0.5%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.edit_cargo_assign_btn {
+    color: rgba(181, 187, 198, 1);
+    font-size: 10px;
+    font-weight: 500;
+    border-radius: 5px;
+}
+.edit_cargo_details_link_icon {
+    transform: rotate(135deg);
+    width: fit-content;
+    height: 2.5vh;
+    padding: 1%;
+}
+.edit_cargo_delete_btn {
+    border: 0.6px solid rgba(226, 232, 240, 1);
+    border-radius: 5px;
+    font-size: 9px;
+    font-weight: 500;
+    color: rgba(52, 64, 84, 1);
+}
+.edit_cargo_details_delete_icon {
+    width: fit-content;
+    height: 2vh;
+    padding: 1% 1%;
+}
+.edit_cargo_details_div {
+    display: flex;
+    flex-direction: row;
+    margin: 1%;
+}
+.edit_cargo_details_label_div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2%;
+    width: fit-content;
+}
+.edit_cargo_details_input_div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2%;
+}
+FormLabel {
+    padding-bottom: 20%;
+}
