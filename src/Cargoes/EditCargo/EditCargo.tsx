@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './EditCargo.css';
 import { Button } from '@/components/ui/button';
-import { Link2, Trash2 } from 'lucide-react';
+import { Link2, Trash2,Calendar as CalendarIcon } from 'lucide-react';
 import {
     Form,
     FormField,
@@ -12,6 +12,16 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { addDays, format } from "date-fns";
+import { DateRange } from "react-day-picker";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import Graph from '../../Common/Graph/Graph.tsx';
 
 interface EditCargoProps {
     onClose: () => void;
@@ -45,8 +55,29 @@ const formSchema = z.object({
     weightMetricTons: z.string()
 })
 type FormData = z.infer<typeof formSchema>;
-
+type FormFieldName = keyof FormData;
+const formFields: { name: FormFieldName; label: string }[] = [
+    { name: "customer", label: "Customer" },
+    { name: "cargoSubType", label: "Cargo Subtype" },
+    { name: "projectNumber", label: "Project Number" },
+    { name: "barcode", label: "Barcode #" },
+    { name: "length", label: "Length (M)" },
+    { name: "packingListId", label: "Packing List ID" },
+    { name: "cargoStatus", label: "Cargo Status" },
+    { name: "voyage", label: "Voyage#" },
+    { name: "guppyId", label: "Guppy ID" },
+    { name: "height", label: "Height" },
+    { name: "cargoType", label: "Cargo Type" },
+    { name: "projectName", label: "Project Name" },
+    { name: "cargoId", label: "Cargo ID" },
+    { name: "remoraId", label: "Remora ID" },
+    { name: "weightMetricTons", label: "Weight,Metric tons" },
+];
 const EditCargo: React.FC<EditCargoProps> = ({ onClose, cargo }) => {
+    const [date, setDate] = React.useState<DateRange | undefined>({
+        from: new Date(2022, 0, 20),
+        to: addDays(new Date(2022, 0, 20), 20),
+      })
     const progress = statusProgressMap[cargo.cargoStatus] ?? 0;
     const CargoStatus = cargo.cargoStatus === 'Origin';//return boolean
     const form = useForm<FormData>({
@@ -54,16 +85,16 @@ const EditCargo: React.FC<EditCargoProps> = ({ onClose, cargo }) => {
         defaultValues: {
             customer: cargo.customer,
             packingListId: cargo.packingListId,
-            cargoType: cargo.cargoType ,
-            cargoSubType: cargo.cargoSubType ,
-            cargoStatus: cargo.cargoStatus ,
-            projectName: cargo.projectName ,
-            projectNumber: cargo.projectNumber ,
-            voyage: cargo.voyage ,
-            cargoId: cargo.cargoId ,
-            barcode: cargo.barcode ,
-            guppyId: cargo.guppyId ,
-            remoraId: cargo.remoraId ,
+            cargoType: cargo.cargoType,
+            cargoSubType: cargo.cargoSubType,
+            cargoStatus: cargo.cargoStatus,
+            projectName: cargo.projectName,
+            projectNumber: cargo.projectNumber,
+            voyage: cargo.voyage,
+            cargoId: cargo.cargoId,
+            barcode: cargo.barcode,
+            guppyId: cargo.guppyId,
+            remoraId: cargo.remoraId,
             length: cargo.length,
             height: cargo.height,
             weightMetricTons: cargo.weightMetricTons
@@ -94,7 +125,7 @@ const EditCargo: React.FC<EditCargoProps> = ({ onClose, cargo }) => {
                 </div>
                 <div className='buttons_div'>
                     <Button variant='outline' onClick={onClose}>Cancel</Button>
-                    <Button>Save</Button>
+                    <Button onClick={form.handleSubmit(onSubmit)}>Save</Button>
                 </div>
             </div>
             <div className='edit_cargo_details_main_div'>
@@ -110,288 +141,129 @@ const EditCargo: React.FC<EditCargoProps> = ({ onClose, cargo }) => {
                 </div>
                 <div className='edit_cargo_details_div'>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)}>
-                            <div style={{display:'flex',
-                                flexDirection:'row'
-                            }}>
-                                <div className='edit_cargo_details_label_div'>
-                                    <FormField
-                                        control={form.control}
-                                        name="customer"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Customer</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="cargoSubType"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Cargo Subtype</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="projectNumber"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Project Number</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="barcode"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Barcode #</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="length"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Length(M)</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="packingListId"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Packing List ID</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="cargoStatus"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Cargo Status</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="voyage"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Voyage#</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="guppyId"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Guppy ID</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="height"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Height</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="cargoType"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Cargo Type</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="projectName"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Project Name</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="cargoId"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Cargo ID</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="remoraId"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Remora ID</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="weightMetricTons"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Weight,Metric tons</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
+                        <form>
+                            {formFields.map(({ name, label }) => (
+                                <div className='edit_cargo_details_label_input_div'>
+                                    <div style={{paddingLeft:'1vw',width:'20vw'}}>
+                                        <FormField
+                                            control={form.control}
+                                            name={name}
+                                            render={() => (
+                                                <FormItem>
+                                                    <FormLabel className='edit_cargo_details_label'>{label}</FormLabel>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
+                                    <div style={{width:'100%'}}>
+                                        <FormField
+                                            control={form.control}
+                                            name={name}
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <Input {...field}  className='edit_cargo_details_input'/>
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
                                 </div>
-                                <div className='edit_cargo_details_input_div'>
-                                    <FormField
-                                        control={form.control}
-                                        name="customer"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="cargoSubType"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="projectNumber"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="barcode"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="length"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="packingListId"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="cargoStatus"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="voyage"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="guppyId"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="height"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="cargoType"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="projectName"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="cargoId"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="remoraId"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="weightMetricTons"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <Input {...field}/>
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                            </div>
+                            ))}
                         </form>
                     </Form>
                 </div>
+            </div>
+            <div className='edit_cargo_map_div'>
+                <p>
+                    Map
+                </p>
+            </div>
+            <div className='edit_cargo_graph_calendar_div'>
+                <div style={{
+                    display:'flex',
+                    flexDirection:'row',
+                    // justifyContent:'space-evenly',
+                    alignItems:'center'
+                    }}
+                >
+                    <div style={{paddingLeft:'2%',paddingRight:'2%'}}>
+                        <Button variant='ghost' style={{
+                            color:'rgba(181, 187, 198, 1)',
+                            fontSize:'14px',
+                            fontWeight:'600',
+                            }}
+                        >
+                            Temperature
+                        </Button>
+                        <Button variant='outline' style={{
+                            color:'rgba(181, 187, 198, 1)',
+                            fontSize:'14px',
+                            fontWeight:'600',
+                            }}
+                        >
+                            Acceleration
+                        </Button>
+                    </div>
+                    <div>
+                        <Popover>
+                            <PopoverTrigger asChild style={{width:'100%'}}>
+                                <Button
+                                    id="date"
+                                    variant={"outline"}
+                                    // className={cn(
+                                    //     "w-[250px] justify-start text-left font-normal",
+                                    //     !date && "text-muted-foreground"
+                                    // )}
+                                    style={{
+                                        backgroundColor:'rgba(255, 255, 255, 1)',
+                                        border:'0.6px solid rgba(203, 213, 225, 1)',
+                                        fontSize:'10px',
+                                        fontWeight:'500',
+                                        color:'rgba(102, 112, 133, 1)',
+                                    }}
+                                >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {date?.from ? (
+                                        date.to ? (
+                                            <>
+                                                {format(date.from, "LLL dd, y")} -{" "}
+                                                {format(date.to, "LLL dd, y")}
+                                            </>
+                                        ) : (
+                                            format(date.from, "LLL dd, y")
+                                        )
+                                        ) : (
+                                            <span>Pick a date</span>
+                                        )}
+                                </Button>
+                            </PopoverTrigger>
+                            <div>
+                                <PopoverContent data-side='bottom' style={{
+                                    width:'fit-Content',
+                                    padding:'0%',
+                                    fontSize:'4px',
+                                    transform: 'translate(-5%, -0%)'
+                                    }}
+                                >
+                                    <Calendar
+                                        initialFocus
+                                        mode="range"
+                                        defaultMonth={date?.from}
+                                        selected={date}
+                                        onSelect={setDate}
+                                        numberOfMonths={2}
+                                        style={{
+                                            fontSize:'4px',
+                                            padding:'0.5%',
+                                            backgroundColor:'rgba(255, 255, 255, 1)',
+                                            border:'0.3px solid rgba(228, 228, 231, 1)',
+                                        }}
+                                    />
+                                </PopoverContent>
+                            </div>
+                        </Popover>
+                    </div>
+                </div>
+                {/* <Graph /> */}
             </div>
         </div>
     )

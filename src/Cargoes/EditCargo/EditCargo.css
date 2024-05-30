@@ -1,5 +1,6 @@
 .edit_cargo_main_div {
-    margin: 1.5%;
+    margin: 1%;
+    margin-bottom: 0%;
 }
 .edit_cargo_sub_div {
     position: relative;
@@ -8,6 +9,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    max-height: 6vh;
 }
 .edit_cargo_progress_div {
     display: flex;
@@ -31,7 +33,6 @@
 }
 .progress-fill {
     height: 100%;
-    /* width: 100%; */
     background-color: rgba(26, 41, 80, 1);
     display: flex;
     align-items: center;
@@ -43,7 +44,6 @@
 .progress-text {
     position: absolute;
     width: 50%;
-    /* padding: 100%; */
     text-align: center;
     display: flex;
     align-items: center;
@@ -63,10 +63,10 @@
 .edit_cargo_details_main_div {
     float: left;
     background-color: rgba(252, 252, 253, 1);
-    height: fit-content;
     width: 60vw;
+    max-height: 82vh;
+    overflow: auto;
     margin-top: 0.5%;
-    margin-right: 0.5%;
 }
 .edit_cargo_details_button_div {
     margin: 0.5%;
@@ -101,22 +101,38 @@
 }
 .edit_cargo_details_div {
     display: flex;
-    flex-direction: row;
-    margin: 1%;
-}
-.edit_cargo_details_label_div {
-    display: flex;
     flex-direction: column;
+    width: 100%;
+    padding: 1%;
+    padding-bottom: 0%;
+}
+.edit_cargo_details_label_input_div {
+    display: flex;
+    flex-direction: row;
+    padding: 0.5%;
+    padding-bottom: 0%;
+    align-items: center;
+    width: 100%;
+}
+.edit_cargo_details_input {
+    display: flex;
+    padding: 0%;
+    align-items: center;
     justify-content: center;
-    padding: 2%;
+    border: 0.9px solid rgba(203, 213, 225, 1);
+}
+.edit_cargo_details_input:focus {
+    box-shadow: none;
+    outline: none;
+}
+.edit_cargo_details_label {
     width: fit-content;
 }
-.edit_cargo_details_input_div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 2%;
+.edit_cargo_map_div {
+    background-color: aqua;
+    height: 40vh;
+    margin-top: 0.5%;
 }
-FormLabel {
-    padding-bottom: 20%;
+.edit_cargo_graph_calendar_div {
+    height: 42vh;
 }

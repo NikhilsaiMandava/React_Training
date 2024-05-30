@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Pagination from '../../Common/Pagination.tsx';
+import Pagination from '../../Common/Pagination/Pagination.tsx';
 import {
     Card,
     CardContent,

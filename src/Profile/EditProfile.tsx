@@ -129,7 +129,7 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
                                 name="email"
                                 render={({ field }) => (
                                 <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                                    <FormLabel style={{width:'157px'}} className="label">Email</FormLabel>
+                                    <FormLabel style={{width:'128px'}} className="label">Email</FormLabel>
                                     <Input {...field} className="input"/>
                                 </FormItem>)}
                             />
@@ -138,7 +138,7 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
                                 name="login"
                                 render={({ field }) => (
                                 <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                                    <FormLabel style={{width:'157px'}} className="label">Login</FormLabel>
+                                    <FormLabel style={{width:'128px'}} className="label">Login</FormLabel>
                                     <Input {...field} className="input"/>
                                 </FormItem>)}
                             />
@@ -147,7 +147,7 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
                                 name="password"
                                 render={({ field }) => (
                                 <FormItem style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                                    <FormLabel style={{width:'157px'}} className="label">Password</FormLabel>
+                                    <FormLabel style={{width:'128px'}} className="label">Password</FormLabel>
                                     <Input {...field} type="password" className="input"/>
                                 </FormItem>)}
                             />

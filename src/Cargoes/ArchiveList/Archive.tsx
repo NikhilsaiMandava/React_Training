@@ -29,7 +29,7 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Pagination from '../../Common/Pagination.tsx';
+import Pagination from '../../Common/Pagination/Pagination.tsx';
 import {
     Table,
     TableBody,
