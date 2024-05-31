@@ -162,9 +162,10 @@ const columnDefs: Array<{ key: keyof cargo, label: string, renderCell?: ({ row }
 type SortDirection = 'asc' | 'dsc';
 type ContextType = {
     onEditClick: (cargo: cargo) => void;
+    onViewClick: (cargo: cargo) => void;
 };
 function CargoesList() {
-    const { onEditClick } = useOutletContext<ContextType>();
+    const { onEditClick,onViewClick } = useOutletContext<ContextType>();
     const [showGenerateReport, setShowGenerateReport] = React.useState(false);
     const [showArchiveCreateCargo, setShowArchiveCreateCargo] = React.useState(false);
     const [showAssignToVoyage, setShowAssignToVoyage] = React.useState(false);
@@ -258,7 +259,7 @@ function CargoesList() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" style={{ width: '5vw', height: 'fit-content', padding: '1%', color: 'rgba(9, 9, 11, 1)' }}>
                         <DropdownMenuItem className='dropdown_item' onClick={() => onEditClick(row.original)}>Edit</DropdownMenuItem>
-                        <DropdownMenuItem className='dropdown_item'>View</DropdownMenuItem>
+                        <DropdownMenuItem className='dropdown_item' onClick={() => onViewClick(row.original)}>View</DropdownMenuItem>
                         <DropdownMenuItem className='dropdown_item'>Make a Copy</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className='dropdown_item'>Delete

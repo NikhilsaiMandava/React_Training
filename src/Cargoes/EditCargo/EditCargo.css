@@ -134,5 +134,25 @@
     margin-top: 0.5%;
 }
 .edit_cargo_graph_calendar_div {
-    height: 42vh;
+    height: 40vh;
+    width: 35vw;
+    float: right;
+}
+.text-xs {
+    font-size: 8px;
+}
+.recharts-cartesian-axis-ticks {
+    font-size: 10px;
+}
+.recharts-surface {
+    /* margin-top: 10%; */
+    padding: 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgb(229, 234, 240);
+}
+.edit_cargo_calender_btns:focus {
+    box-shadow: none;
+    outline: none;
 }

@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addDays, format } from "date-fns";
+import { addDays, format, eachDayOfInterval } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
@@ -73,11 +73,40 @@ const formFields: { name: FormFieldName; label: string }[] = [
     { name: "remoraId", label: "Remora ID" },
     { name: "weightMetricTons", label: "Weight,Metric tons" },
 ];
+type GraphDataType = {
+    date:string,
+    value:number
+}
 const EditCargo: React.FC<EditCargoProps> = ({ onClose, cargo }) => {
+    const graphData:GraphDataType[]=[];//This data to send to graph and show
+    const [activeButton, setActiveButton] = React.useState<string | null>(null);
     const [date, setDate] = React.useState<DateRange | undefined>({
-        from: new Date(2022, 0, 20),
-        to: addDays(new Date(2022, 0, 20), 20),
-      })
+        from: new Date(),
+        to: addDays(new Date(),20),
+    })
+    //This is to get the dates from selected range with data to show in graph
+    const fromDate=date?.from ? format(date?.from, 'MM/dd/yyyy') : '';
+    const toDate=date?.to ? format(date?.to, 'MM/dd/yyyy') : '';
+    console.log("From date",fromDate);
+    console.log("end date",toDate);
+    const dates=eachDayOfInterval({start:fromDate,end:toDate});
+    console.log("Dates",dates);
+    const formattedDates=dates.map(date => format(date, 'dd/MM/yyyy'));
+    console.log("Formatted dates",formattedDates);
+    let count=0;
+    {formattedDates.map((formattedDate) => 
+        {
+            if(count===formattedDates.length-1) {
+                graphData.push({date:formattedDate,value:count-1000});
+            }
+            else {
+                graphData.push({date:formattedDate,value:count*100});
+            }
+            count+=1;
+        })
+    };
+    console.log("graphData",graphData);
+
     const progress = statusProgressMap[cargo.cargoStatus] ?? 0;
     const CargoStatus = cargo.cargoStatus === 'Origin';//return boolean
     const form = useForm<FormData>({
@@ -103,6 +132,9 @@ const EditCargo: React.FC<EditCargoProps> = ({ onClose, cargo }) => {
     const onSubmit = (data: FormData) => {
         console.log(data);
     };
+    const handleButtonClick = (buttonType: string) => {
+        setActiveButton(buttonType);
+    };
     return (
         <div className='edit_cargo_main_div'>
             <div className='edit_cargo_sub_div'>
@@ -115,7 +147,8 @@ const EditCargo: React.FC<EditCargoProps> = ({ onClose, cargo }) => {
                             <div className="progress-text" style={{
                                 color: CargoStatus ? 'black' : 'white',
                                 alignItems: CargoStatus ? 'center' : 'normal',
-                                justifyContent: CargoStatus ? 'end' : '',
+                                justifyContent: CargoStatus ? 'end' : 'center',
+                                padding:CargoStatus?'0%':''
                             }}
                             >
                                 {cargo.cargoStatus}
@@ -181,89 +214,72 @@ const EditCargo: React.FC<EditCargoProps> = ({ onClose, cargo }) => {
                 <div style={{
                     display:'flex',
                     flexDirection:'row',
-                    // justifyContent:'space-evenly',
                     alignItems:'center'
                     }}
                 >
-                    <div style={{paddingLeft:'2%',paddingRight:'2%'}}>
-                        <Button variant='ghost' style={{
-                            color:'rgba(181, 187, 198, 1)',
-                            fontSize:'14px',
+                    <div style={{padding:'2%'}}>
+                        <Button variant='ghost' onClick={()=>handleButtonClick('temperature')} style={{
+                            color: activeButton === 'temperature'? 'rgba(0, 0, 0, 1)' :'rgba(181, 187, 198, 1)',
+                            fontSize: activeButton === 'temperature'?'12px':'14px',
                             fontWeight:'600',
                             }}
+                            className='edit_cargo_calender_btns'
                         >
                             Temperature
                         </Button>
-                        <Button variant='outline' style={{
-                            color:'rgba(181, 187, 198, 1)',
-                            fontSize:'14px',
+                        <Button variant='ghost' onClick={()=>handleButtonClick('acceleration')} style={{
+                            color: activeButton === 'acceleration'? 'rgba(0, 0, 0, 1)' :'rgba(181, 187, 198, 1)',
+                            fontSize: activeButton === 'acceleration'?'12px':'14px',
                             fontWeight:'600',
                             }}
+                            className='edit_cargo_calender_btns'
                         >
                             Acceleration
                         </Button>
                     </div>
                     <div>
                         <Popover>
-                            <PopoverTrigger asChild style={{width:'100%'}}>
+                            <PopoverTrigger asChild>
                                 <Button
                                     id="date"
                                     variant={"outline"}
-                                    // className={cn(
-                                    //     "w-[250px] justify-start text-left font-normal",
-                                    //     !date && "text-muted-foreground"
-                                    // )}
-                                    style={{
-                                        backgroundColor:'rgba(255, 255, 255, 1)',
-                                        border:'0.6px solid rgba(203, 213, 225, 1)',
-                                        fontSize:'10px',
-                                        fontWeight:'500',
-                                        color:'rgba(102, 112, 133, 1)',
-                                    }}
+                                    className={cn(
+                                    "w-max justify-start text-center text-[10px] text-black font-medium",
+                                    !date && "text-muted-foreground"
+                                    )}
+                                    style={{color:'rgba(102, 112, 133, 1)',fontWeight:'500'}}
                                 >
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    <CalendarIcon className="mr-2 h-4 w-4" style={{color:'rgba(181, 187, 198, 1)'}}/>
                                     {date?.from ? (
-                                        date.to ? (
-                                            <>
-                                                {format(date.from, "LLL dd, y")} -{" "}
-                                                {format(date.to, "LLL dd, y")}
-                                            </>
-                                        ) : (
-                                            format(date.from, "LLL dd, y")
-                                        )
-                                        ) : (
-                                            <span>Pick a date</span>
-                                        )}
+                                    date.to ? (
+                                        <>
+                                        {format(date.from, "LLL dd, y")} -{" "}
+                                        {format(date.to, "LLL dd, y")}
+                                        </>
+                                    ) : (
+                                        format(date.from, "LLL dd, y")
+                                    )
+                                    ) : (
+                                    <span>Pick a date</span>
+                                    )}
                                 </Button>
                             </PopoverTrigger>
-                            <div>
-                                <PopoverContent data-side='bottom' style={{
-                                    width:'fit-Content',
-                                    padding:'0%',
-                                    fontSize:'4px',
-                                    transform: 'translate(-5%, -0%)'
-                                    }}
-                                >
-                                    <Calendar
-                                        initialFocus
-                                        mode="range"
-                                        defaultMonth={date?.from}
-                                        selected={date}
-                                        onSelect={setDate}
-                                        numberOfMonths={2}
-                                        style={{
-                                            fontSize:'4px',
-                                            padding:'0.5%',
-                                            backgroundColor:'rgba(255, 255, 255, 1)',
-                                            border:'0.3px solid rgba(228, 228, 231, 1)',
-                                        }}
-                                    />
-                                </PopoverContent>
-                            </div>
+                            <PopoverContent className="w-auto" align="start">
+                                <Calendar
+                                    initialFocus
+                                    mode="range"
+                                    defaultMonth={date?.from}
+                                    selected={date}
+                                    onSelect={setDate}
+                                    numberOfMonths={2}
+                                />
+                            </PopoverContent>
                         </Popover>
                     </div>
                 </div>
-                {/* <Graph /> */}
+                <div className='edit_cargo_Graph_div'>
+                    <Graph data={graphData}/>
+                </div>
             </div>
         </div>
     )
