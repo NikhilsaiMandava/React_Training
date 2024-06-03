@@ -5,7 +5,7 @@
     width: 100%;
     padding: 1%;
     align-items: center;
-    height: 9vh;
+    /* height: max-content; */
 }
 .header_logo_description_div {
     margin-left: 1%;

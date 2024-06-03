@@ -1,13 +1,4 @@
-.input:focus {
-    outline : none;
-    box-shadow: none;
-}
-.input {
-    border:1px solid rgba(203, 213, 225, 1);
-    border-radius: 6px;
-    /* width: 200px; */
-}
-.card_main_div {
+.create_voyage_card_main_div {
     position: fixed;
     top: 0;
     left: 0;
@@ -15,7 +6,7 @@
     height: 100%;
     z-index: 999;
 }
-.card_bg_div {
+.create_voyage_bg_div {
     position: fixed;
     top: 0;
     left: 0;

@@ -149,7 +149,7 @@ const EditCargo: React.FC<EditCargoProps> = ({ onClose, cargo }) => {
                                 alignItems: CargoStatus ? 'center' : 'normal',
                                 justifyContent: CargoStatus ? 'end' : 'center',
                                 padding:CargoStatus?'0%':''
-                            }}
+                                }}
                             >
                                 {cargo.cargoStatus}
                             </div>

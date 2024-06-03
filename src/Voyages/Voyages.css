@@ -1,0 +1,38 @@
+.voyage_main_div {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5%;
+}
+.voyage_searchbar_div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.voyage_search_icon_input_div {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 40vw;
+    flex-direction: row;
+}
+.voyage_search_icon {
+    position: absolute;
+    left: 6px;
+    color: rgb(170, 164, 164);
+    width: 1.5vw;
+    height: 10vh;
+}
+.voyage_search_input {
+    border: 0.8px solid rgba(226, 232, 240, 1);
+    outline: none;
+    background-color: rgba(255, 255, 255, 1);
+    padding-left: 7%;
+    margin-right: 2%;
+}
+.voyage_searchbar_buttons_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
