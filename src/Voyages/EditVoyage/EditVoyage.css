@@ -1,4 +1,4 @@
-.create_voyage_card_main_div {
+.edit_voyage_main_div {
     position: fixed;
     top: 0;
     left: 0;
@@ -6,7 +6,7 @@
     height: 100%;
     z-index: 999;
 }
-.create_voyage_bg_div {
+.edit_voyage_bg_div {
     position: fixed;
     top: 0;
     left: 0;
@@ -15,12 +15,12 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 998;
 }
-.create_voyage_input:focus {
-    box-shadow: none;
-    outline: none;
-}
-.create_voyage_input {
+.edit_voyage_input {
     border: 1px solid rgba(203, 213, 225, 1);
     padding: 1.5% 1.5%;
     border-radius: 6px;
+}
+.edit_voyage_input:focus {
+    box-shadow: none;
+    outline: none;
 }

@@ -44,7 +44,6 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
-    console.log("__________________", userData);
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -92,11 +91,11 @@ const EditProfile:React.FC<EditProfileProps> = ({userData,onClose}) => {
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)}>
                             <div style={{display:'flex',flexDirection:'row',}}>
-                                <div style={{width : '143px',display:'flex',alignItems:'center'}}>
+                                <div style={{width : '115px',display:'flex',alignItems:'center'}}>
                                     <FormField
                                         control={form.control}
                                         name="firstName"
-                                        render={({ field }) => (
+                                        render={() => (
                                         <FormItem>
                                             <FormLabel className="label">First Name</FormLabel>
                                         </FormItem>)}

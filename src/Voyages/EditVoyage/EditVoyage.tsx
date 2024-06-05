@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './CreateVoyage.css';
+import './EditVoyage.css';
 import {
     Card,
     CardContent,
@@ -88,50 +88,51 @@ const formFields: { name: FormFieldName; label: string }[] = [
     { name: "statementsOfFacts", label: "Statements Of Facts"}
 ];
 
-interface CreateVoyageProps {
-    onClose : () => void;
+interface EditVoyageProps {
+    onClose:() => void;
+    voyage:any;
 }
-const CreateVoyage : React.FC< CreateVoyageProps > = ({onClose}) => {
+const EditVoyage:React.FC<EditVoyageProps> =({onClose,voyage}) => {
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            customer : '',
-            voyage : '',
-            voyageStatus : '',
-            loadingPortCountry : '',
-            loadingPort: '',
-            loadingTerminal: '',
-            loadingStevedoring: '',
-            dischargePortCountry : '',
-            dischargePort: '',
-            dischargePortTerminal : '',
-            receiver : '',
-            shipper : '',
-            calculatedETA : '',
-            vessel : '',
-            name : '',
-            image : '',
-            imo : '',
-            mmsi : '',
-            vesselFlagState : '',
-            portOfRegistry : '',
-            owners: '',
-            grt: '',
-            nrt: '',
-            breadth: '',
-            depth: '',
-            speed: '',
-            numberOfCranes: '',
-            cranesMounted: '',
-            craneSWL: '',
-            statementsOfFacts: ''
+            customer : voyage.customer,
+            voyage : voyage.voyage,
+            voyageStatus : voyage.voyageStatus,
+            loadingPortCountry : voyage.loadingPortCountry,
+            loadingPort: voyage.loadingPort,
+            loadingTerminal: voyage.loadingTerminal ,
+            loadingStevedoring: voyage.loadingStevedoring,
+            dischargePortCountry : voyage.dischargePortCountry,
+            dischargePort: voyage.dischargePort,
+            dischargePortTerminal : voyage.dischargePortTerminal,
+            receiver : voyage.receiver,
+            shipper : voyage.shipper,
+            calculatedETA : voyage.calculatedETA,
+            vessel : voyage.vessel,
+            name : voyage.name,
+            image : voyage.image,
+            imo : voyage.imo,
+            mmsi : voyage.mmsi,
+            vesselFlagState : voyage.vesselFlagState,
+            portOfRegistry : voyage.portOfRegistry,
+            owners: voyage.owners,
+            grt: voyage.grt,
+            nrt: voyage.nrt,
+            breadth: voyage.breadth,
+            depth: voyage.depth,
+            speed: voyage.speed,
+            numberOfCranes: voyage.numberOfCranes,
+            cranesMounted: voyage.cranesMounted,
+            craneSWL: voyage.cranesSWL,
+            statementsOfFacts: voyage.statementsOfFacts
         },
     });
     const onSubmit = (data: FormData) => {
         console.log(data);
     };
     return (
-        <div className='create_voyage_card_main_div'>
+        <div className='edit_voyage_main_div'>
             <Card style={{
                 position: 'absolute',
                 top: '50%',
@@ -153,7 +154,7 @@ const CreateVoyage : React.FC< CreateVoyageProps > = ({onClose}) => {
                     padding: '2%'
                     }}
                 >
-                    <CardTitle style={{ fontSize: '15px' }}>Create Voyage</CardTitle>
+                    <CardTitle style={{ fontSize: '15px' }}>Edit Voyage</CardTitle>
                     <XIcon onClick={onClose} style={{ margin: '0px' }} />
                 </CardHeader>
                 <CardContent style={{ padding: '10px' }}>
@@ -171,7 +172,7 @@ const CreateVoyage : React.FC< CreateVoyageProps > = ({onClose}) => {
                                                     render={({ field }) => (
                                                         <FormItem style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                                             <FormLabel style={{ width: '300px', padding: '5px' }}>{label}</FormLabel>
-                                                            <Input {...field} className="create_voyage_input" />
+                                                            <Input {...field} className="edit_voyage_input" />
                                                         </FormItem>
                                                     )}
                                                 />
@@ -181,16 +182,16 @@ const CreateVoyage : React.FC< CreateVoyageProps > = ({onClose}) => {
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'end', marginTop: '15px', paddingRight: '15px' }}>
                                     <Button variant='outline' style={{ color: 'black',border:'0.7px solid rgba(226, 232, 240, 1)',marginRight:'2%'}} onClick={onClose}>Cancel</Button>&nbsp;
-                                    <Button style={{ backgroundColor: 'rgba(44, 57, 92, 1)' }}>Create Cargo</Button>
+                                    <Button style={{ backgroundColor: 'rgba(44, 57, 92, 1)' }}>Edit Voyage & Vessel</Button>
                                 </div>
                             </div>
                         </form>
                     </Form>
                 </CardContent>
             </Card>
-            <div className='create_voyage_bg_div' onClick={onClose}></div>
+            <div className='edit_voyage_bg_div' onClick={onClose}></div>
         </div>
     )
 }
 
-export default CreateVoyage;
+export default EditVoyage;

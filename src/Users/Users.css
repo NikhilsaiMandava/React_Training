@@ -1,0 +1,71 @@
+.users_main_div {
+    margin: 1%;
+}
+.users_links_search_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.users_links_div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.users_links_btn {
+    color: rgba(181, 187, 198, 1);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 1%;
+    width: 8vw;
+}
+.users_links_btn.active {
+    color: rgba(16, 24, 40, 1);
+    text-decoration: underline;
+    font-size: 14px;
+    font-weight: 600;
+}
+.users_search_bar_div {
+    position: relative;
+    width: 30vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 2%;
+}
+.users_search_bar_search_icon {
+    position: absolute;
+    left: 6px;
+    color: rgb(170, 164, 164);
+    width: 1.5vw;
+    height: 10vh;
+}
+.users-search_bar_input_div {
+    border: 0.8px solid rgba(226, 232, 240, 1);
+    outline: none;
+    background-color: rgba(255, 255, 255, 1);
+    padding-left: 10%;
+}
+.users_buttons_div {
+    display: flex;
+    flex-direction: row;
+}
+.users_filters_btn {
+    border: 0.8px solid rgba(208, 213, 221, 1);
+    padding: 1.5% 1.5%;
+    margin-right: 6%;
+}
+.users_filters_btn_icon {
+    width: 2vw;
+    height: 2vh;
+}
+.users_create_user_btn {
+    padding: 1.5% 1.5%;
+    margin-right: 3%;
+}
+.users_create_user_btn_icon {
+    width: 2vw;
+    height: 3vh;
+    padding: 1%;
+}
