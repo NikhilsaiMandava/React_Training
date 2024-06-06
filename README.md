@@ -7,4 +7,4 @@ How to run the code
 4.Now run the code by executing this command `npm run dev` you will get the url like below
    https://localhost:5473 (or) https://localhost:<PortNumber>
 5.This react app is built by using typescript and vite.
-6.In this we are using shadcn ui library and some other packages for cmponent developing.
+6.In this we are using shadcn ui library and some other packages for component developing.
