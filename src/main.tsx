@@ -1,38 +1,42 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import Login from './Login/Login.tsx';
-import Dashboard from './Dashboard/Dashboard.tsx';
-import Map from '../src/Map/Map.tsx';
-import Cargoes from './Cargoes/Cargoes.tsx';
-import CargoesList from './Cargoes/CargoesList.tsx';
-import Archive from './Cargoes/ArchiveList/Archive.tsx';
-import Voyages from './Voyages/Voyages.tsx';
-import Users from './Users/Users.tsx';
-import AllUsers from '../src/Users/AllUsers/AllUsers.tsx';
-import UsersOnline from '../src/Users/UsersOnline/UsersOnline.tsx';
-import ActivityReport from './Users/ActivityReport/ActivityReport.tsx';
+import * as React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { Suspense } from 'react';
+
+const LoginComponent=React.lazy(()=>import('./Login/Login.tsx'));
+const DashboardComponent = React.lazy(() => import('./Dashboard/Dashboard.tsx'));
+const MapComponent=React.lazy(()=> import('./Map/Map.tsx'));
+const CargoesComponent=React.lazy(()=> import('./Cargoes/Cargoes.tsx'));
+const CargoesListComponent=React.lazy(()=>import('./Cargoes/CargoesList.tsx'));
+const ArchiveComponent = React.lazy(()=>import ('./Cargoes/ArchiveList/Archive.tsx'));
+const VoyagesComponent = React.lazy(()=>import('./Voyages/Voyages.tsx'));
+const UsersComponent=React.lazy(()=>import('./Users/Users.tsx'));
+const AllUsersComponent=React.lazy(()=>import('./Users/AllUsers/AllUsers.tsx'));
+const UsersOnlineComponent=React.lazy(()=>import('./Users/UsersOnline/UsersOnline.tsx'));
+const ActivityReportComponent=React.lazy(()=>import('./Users/ActivityReport/ActivityReport.tsx'));
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Navigate to='/login' />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/dashboard' element={<Dashboard />}>
-          <Route path='map' element={<Map />} />
-          <Route path='cargoes' element={<Cargoes />}>
-            <Route path='list' element={<CargoesList />} />
-            <Route path='archive' element={<Archive />} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Route path='/' element={<Navigate to='/login' />} />
+          <Route path='/login' element={<LoginComponent />} />
+          <Route path='/dashboard' element={<DashboardComponent />}>
+            <Route path='map' element={<MapComponent />} />
+            <Route path='cargoes' element={<CargoesComponent />}>
+              <Route path='list' element={<CargoesListComponent />} />
+              <Route path='archive' element={<ArchiveComponent />} />
+            </Route>
+            <Route path='voyages' element={<VoyagesComponent />} />
+            <Route path='users' element={<UsersComponent />}>
+              <Route path='allusers' element={<AllUsersComponent />} />
+              <Route path='usersonline' element={<UsersOnlineComponent />} />
+              <Route path='activityreport' element={<ActivityReportComponent />} />
+            </Route>
           </Route>
-          <Route path='voyages' element={<Voyages />} />
-          <Route path='users' element={<Users />}>
-            <Route path='allusers' element={<AllUsers />} />
-            <Route path='usersonline' element={<UsersOnline />} />
-            <Route path='activityreport' element={<ActivityReport />} />
-          </Route>
-        </Route>
+        </Suspense>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
