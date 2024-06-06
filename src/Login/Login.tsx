@@ -1,3 +1,4 @@
+import * as React from 'react';
 import LoginLogo from '../assets/login_logo.png';
 import LoginTitle from '../assets/login_title.png';
 import '../Login/Login.css';
@@ -20,16 +21,13 @@ import { LockIcon } from "lucide-react"
 
 
 const formSchema = z.object({
-    email: z.string().min(8,{
-        message:"Invalid Email entered"
-    }),
-    password : z.string().min(6,{
-        message : "Password should be at least 6 characters",
-    })
+    email:z.string(),
+    password:z.string()
 })
 type FormData = z.infer<typeof formSchema>;
 
 function Login() {
+    const [isSame,setIsSame] = React.useState(false);
     const navigate =useNavigate();
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -38,9 +36,17 @@ function Login() {
           password: '',
         },
     });
+    const emailValue=form.watch("email");
+    const passwordValue=form.watch("password");
     const onSubmit = (data: FormData) => {
-        console.log(data);
-        navigate('/dashboard/map');
+        if(data.email === 'admin'&& data.password === 'admin') {
+            setIsSame(true);
+            console.log(data);
+            navigate('/dashboard/map');
+        }
+        else {
+            setIsSame(false);
+        }
     };
     return (
         <>
@@ -96,7 +102,10 @@ function Login() {
                                                 </FormItem>
                                             )}
                                         />
-                                        <Button type="submit" className='form_submit_btn'>
+                                        <Button type="submit" 
+                                            className='form_submit_btn' 
+                                            disabled={emailValue !== 'admin' || passwordValue !== 'admin'}
+                                        >
                                             <LockIcon size='18px' style={{marginRight : '15px'}}/>Login
                                         </Button>
                                     </form>

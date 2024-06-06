@@ -12,12 +12,21 @@ import {
     FormItem,
     FormLabel,
 } from "@/components/ui/form";
+import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    // DropdownMenuLabel,
+    // DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { XIcon } from "lucide-react";
+import { XIcon,ChevronDown } from "lucide-react";
 
 const formSchema = z.object({
     firstName : z.string(),
@@ -46,9 +55,24 @@ const formFields: { name: FormFieldName; label: string }[] = [
     { name : 'customers', label : 'Customers'},
     { name : 'profilePic' ,label : 'Profile Pic'}
 ]
+type Checked = DropdownMenuCheckboxItemProps["checked"];
 interface CreateUserProps {
     onClose:() => void;
 }
+const userRoles = [
+    'Truck Driver',
+    'Surveyor',
+    'Supervisor',
+    'Stevedore',
+    'HSE Professional',
+    'Support'
+]
+const jobRoles = [
+    'Administrator',
+    'Inspector',
+    'Carrier',
+    'Report Viewer'
+]
 
 const CreateUser:React.FC<CreateUserProps> =({onClose}) =>{
     const form = useForm<FormData>({
@@ -66,6 +90,38 @@ const CreateUser:React.FC<CreateUserProps> =({onClose}) =>{
           profilePic : ''
         },
     });
+    const [checkedItems, setCheckedItems] = React.useState<Record<string, Checked>>({
+        'Truck Driver':false,
+        'Surveyor':false,
+        'Supervisor':false,
+        'Stevedore':false,
+        'HSE Professional':false,
+        'Support' : false
+    });
+    const [JobRoles, setJobRoles] = React.useState<Record<string, Checked>>({
+        'Administrator':false,
+        'Inspector':false,
+        'Carrier':false,
+        'Report Viewer':false
+    });
+    const handleCheckedChange = (role: string, checked: Checked) => {
+        const newCheckedItems = Object.keys(checkedItems).reduce((acc, key) => {
+            acc[key] = key === role ? checked : false;
+            return acc;
+        }, {} as Record<string, Checked>);
+
+        setCheckedItems(newCheckedItems);
+        form.setValue('userRole', checked ? role : '');
+    };
+    const handleJobRoleChange = (jobrole: string, checked: Checked) => {
+        const newCheckedItems = Object.keys(JobRoles).reduce((acc, key) => {
+            acc[key] = key === jobrole ? checked : false;
+            return acc;
+        }, {} as Record<string, Checked>);
+
+        setJobRoles(newCheckedItems);
+        form.setValue('jobTitle', checked ? jobrole : '');
+    };
     const onSubmit = (data: FormData) => {
         console.log(data);
     };
@@ -95,7 +151,7 @@ const CreateUser:React.FC<CreateUserProps> =({onClose}) =>{
                     <CardTitle style={{fontSize : '15px'}}>Create User</CardTitle>
                     <XIcon onClick={onClose} style={{margin:'0px'}}/>
                 </CardHeader>
-                <CardContent style={{padding:'10px'}}>
+                <CardContent style={{padding:'10px',maxHeight:'80vh',overflow:'auto'}}>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)}>
                             {formFields.map(({ name, label }) => (
@@ -117,14 +173,109 @@ const CreateUser:React.FC<CreateUserProps> =({onClose}) =>{
                                             name={name}
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <Input {...field}  className='create_user_input'/>
+                                                    {name==='profilePic' ?
+                                                        <Input {...field} type='file' accept='.jpeg,.png' className='create_user_dp_input'/> 
+                                                        : name === 'password' 
+                                                        ?
+                                                        <Input {...field} className='create_user_input' type='password'/>
+                                                        : name === 'userRole'
+                                                        ?
+                                                        <DropdownMenu>
+                                                            <DropdownMenuTrigger style={{width:'100%'}}>
+                                                                <Button variant='outline' style={{
+                                                                    display:'flex',
+                                                                    flexDirection:'row',
+                                                                    justifyContent:'space-between',
+                                                                    alignItems:'center',
+                                                                    width:'100%',
+                                                                    padding: '2% 4%',
+                                                                    border:'border: 1px solid rgba(203, 213, 225, 1);'
+                                                                    }}
+                                                                >
+                                                                    <span style={{fontSize:'13px',color:'rgba(15, 23, 42, 1)',fontWeight:'400'}}>{field.value}</span>
+                                                                    <ChevronDown style={{
+                                                                        width:'20px',
+                                                                        height:'17px',
+                                                                        color:'1px solid rgba(77, 77, 77, 1)'
+                                                                    }}/>
+                                                                </Button>
+                                                            </DropdownMenuTrigger>
+                                                            <DropdownMenuContent style={{
+                                                                zIndex:1000,
+                                                                width:'32.5vw',
+                                                                color:'rgba(102, 112, 133, 1)',
+                                                                backgroundColor:'rgba(255, 255, 255, 1)'
+                                                                }}
+                                                            >
+                                                                {userRoles.map((userRole) => (
+                                                                    <DropdownMenuCheckboxItem style={{
+                                                                        fontSize:checkedItems[userRole]?'13px':'10px',
+                                                                        color:checkedItems[userRole] ? 'black' :'',
+                                                                        fontWeight:checkedItems[userRole]?'400':'normal',
+                                                                        }}
+                                                                        key={userRole}
+                                                                        checked={checkedItems[userRole]}
+                                                                        onCheckedChange={(checked) => handleCheckedChange(userRole, checked)}
+                                                                    >
+                                                                        {userRole}
+                                                                    </DropdownMenuCheckboxItem>
+                                                                ))}
+                                                            </DropdownMenuContent>
+                                                        </DropdownMenu> 
+                                                        : name === 'jobTitle'
+                                                        ?
+                                                        <DropdownMenu>
+                                                            <DropdownMenuTrigger style={{width:'100%'}}>
+                                                                <Button variant='outline' style={{
+                                                                    display:'flex',
+                                                                    flexDirection:'row',
+                                                                    justifyContent:'space-between',
+                                                                    alignItems:'center',
+                                                                    width:'100%',
+                                                                    padding: '2% 4%',
+                                                                    border:'border: 1px solid rgba(203, 213, 225, 1);'
+                                                                    }}
+                                                                >
+                                                                    <span style={{fontSize:'13px',color:'rgba(15, 23, 42, 1)',fontWeight:'400'}}>{field.value}</span>
+                                                                    <ChevronDown style={{
+                                                                        width:'20px',
+                                                                        height:'17px',
+                                                                        color:'1px solid rgba(77, 77, 77, 1)'
+                                                                    }}/>
+                                                                </Button>
+                                                            </DropdownMenuTrigger>
+                                                            <DropdownMenuContent style={{
+                                                                zIndex:1000,
+                                                                width:'32.5vw',
+                                                                color:'rgba(102, 112, 133, 1)',
+                                                                backgroundColor:'rgba(255, 255, 255, 1)'
+                                                                }}
+                                                            >
+                                                                {jobRoles.map((jobRole) => (
+                                                                    <DropdownMenuCheckboxItem style={{
+                                                                        fontSize:checkedItems[jobRole]?'13px':'10px',
+                                                                        color:checkedItems[jobRole] ? 'black' :'',
+                                                                        fontWeight:checkedItems[jobRole]?'400':'normal',
+                                                                        }}
+                                                                        key={jobRole}
+                                                                        checked={checkedItems[jobRole]}
+                                                                        onCheckedChange={(checked) => handleJobRoleChange(jobRole, checked)}
+                                                                    >
+                                                                        {jobRole}
+                                                                    </DropdownMenuCheckboxItem>
+                                                                ))}
+                                                            </DropdownMenuContent>
+                                                        </DropdownMenu> 
+                                                        :
+                                                        <Input {...field}  className='create_user_input'/>
+                                                    }
                                                 </FormItem>
                                             )}
                                         />
                                     </div>
                                 </div>
                             ))}
-                            <div style={{display:'flex',flexDirection:'row',justifyContent:'end'}}>
+                            <div style={{display:'flex',flexDirection:'row',justifyContent:'end',marginTop:'2%'}}>
                                 <Button variant='outline' onClick={onClose} style={{
                                     border:'0.7px solid rgba(226, 232, 240, 1)',
                                     padding:'1.5% 1.5%',

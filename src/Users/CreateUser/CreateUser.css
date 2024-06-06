@@ -35,3 +35,10 @@
     box-shadow: none;
     outline: none;
 }
+.create_user_dp_input {
+    display: flex;
+    padding: 2% 4%;
+    align-items: center;
+    justify-content: center;
+    border: 0.9px solid rgba(203, 213, 225, 1);
+}
