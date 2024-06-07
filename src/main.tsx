@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { Suspense } from 'react';
+import LoaderComponent from './Common/Loader/Loader.tsx';
 
 const LoginComponent = React.lazy(() => import('./Login/Login.tsx'));
 const DashboardComponent = React.lazy(() => import('./Dashboard/Dashboard.tsx'));
@@ -22,60 +23,60 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path='/' element={<Navigate to='/login' />} />
         <Route path='/login' element={
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<LoaderComponent />}>
             <LoginComponent />
-          </Suspense>} 
+          </Suspense>}
         />
         <Route path='/dashboard' element={
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<LoaderComponent />}>
             <DashboardComponent />
           </Suspense>}
         >
           <Route path='map' element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoaderComponent />}>
               <MapComponent />
-              </Suspense>} 
+              </Suspense>}
             />
           <Route path='cargoes' element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoaderComponent />}>
             <CargoesComponent />
             </Suspense>}
           >
             <Route path='list' element={
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<LoaderComponent />}>
                 <CargoesListComponent />
-              </Suspense>} 
+              </Suspense>}
             />
             <Route path='archive' element={
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<LoaderComponent />}>
                 <ArchiveComponent />
-              </Suspense>} 
+              </Suspense>}
             />
           </Route>
           <Route path='voyages' element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoaderComponent />}>
               <VoyagesComponent />
-            </Suspense>} 
+            </Suspense>}
           />
           <Route path='users' element={
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoaderComponent />}>
               <UsersComponent />
             </Suspense>}
           >
             <Route path='allusers' element={
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<LoaderComponent />}>
                 <AllUsersComponent />
-              </Suspense>} 
+              </Suspense>}
             />
             <Route path='usersonline' element={
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<LoaderComponent />}>
                 <UsersOnlineComponent />
-              </Suspense>} 
+              </Suspense>}
             />
             <Route path='activityreport' element={
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<LoaderComponent />}>
                 <ActivityReportComponent />
-              </Suspense>} 
+              </Suspense>}
             />
           </Route>
         </Route>
